@@ -16,14 +16,16 @@ public class Character : MonoBehaviour
     public int currentHp;
     public HPBar hp;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public WeaponData weaponData;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         movement = new Vector3();
+
+        GetComponent<WeaponManager>().AddWeapon(weaponData);
     }
 
-    // Update is called once per frame
     void Update()
     {
         movement.x = Input.GetAxisRaw("Horizontal");

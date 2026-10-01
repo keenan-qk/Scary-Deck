@@ -6,12 +6,14 @@ using UnityEngine.UI;
 public class CardManager : MonoBehaviour
 {
     public TMPro.TextMeshProUGUI boxText;
-    List<int> newList = new List<int>();
+    List<int> newList;
     int index;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        newList = new List<int>();
+
         newList.Add(1);
         newList.Add(2);
         newList.Add(3);
