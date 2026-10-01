@@ -5,6 +5,8 @@ using UnityEngine;
 public class WeaponStats
 {
     public int damage;
+
+    public int timeToAttack;
 }
 
 [CreateAssetMenu]
@@ -12,7 +14,7 @@ public class WeaponData : ScriptableObject
 {
     public string Name;
 
-    public WeaponStats stats;
+    public WeaponStats weaponStats;
 
     public GameObject weaponPrefab;
 }

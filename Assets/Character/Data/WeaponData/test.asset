@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: test
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   Name: testWep
-  stats:
+  weaponStats:
     damage: 5
-  weaponPrefab: {fileID: 0}
+    timeToAttack: 5
+  weaponPrefab: {fileID: 5023498508797488310, guid: 163fdc1ba745917488eefd5ab98c8225, type: 3}
