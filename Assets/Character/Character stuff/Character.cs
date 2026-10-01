@@ -16,11 +16,14 @@ public class Character : MonoBehaviour
     public int currentHp;
     public HPBar hp;
 
+    public WeaponData wd;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         movement = new Vector3();
+        Debug.Log(wd.stats.damage);
     }
 
     // Update is called once per frame
