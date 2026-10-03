@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Character.meta
 guid: c7e0d5b4a7e42c8449efc565ddc998ad
+========
+guid: 4f4e3fee18245984aab8cb8dd8674315
+>>>>>>>> Enemy/ai:Assets/Scripts.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
