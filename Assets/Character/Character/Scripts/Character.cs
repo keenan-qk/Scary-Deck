@@ -23,7 +23,7 @@ public class Character : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         movement = new Vector3();
 
-        GetComponent<WeaponManager>().AddWeapon(weaponData);
+        //GetComponent<WeaponManager>().AddWeapon(weaponData);
     }
 
     void Update()

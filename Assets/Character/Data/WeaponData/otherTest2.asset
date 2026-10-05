@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0a35ca84c7b43d54891b5bc15593c7e5, type: 3}
-  m_Name: test
+  m_Name: otherTest2
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
-  Name: testWep
-  boonImage: {fileID: 7959007142181842230, guid: cf4efc62f90cdb3489129919c6a903ff, type: 3}
+  Name: ot2
+  boonImage: {fileID: 1498994486187017082, guid: 3a2c54cff009b3b4fbbba589f92df708, type: 3}
   weaponStats:
-    damage: 5
-    timeToAttack: 5
-  weaponPrefab: {fileID: 5023498508797488310, guid: 163fdc1ba745917488eefd5ab98c8225, type: 3}
+    damage: 0
+    timeToAttack: 0
+  weaponPrefab: {fileID: 0}
