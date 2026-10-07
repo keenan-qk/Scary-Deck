@@ -2,10 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class CardManager : MonoBehaviour
 {
     public TMPro.TextMeshProUGUI boxText;
+    public UnityEngine.UI.Image cardSelector;
+    private RectTransform cardSelectorTransform;
+    private Vector2 cardTransform;
+
     List<int> newList;
     int index;
 
@@ -17,8 +22,9 @@ public class CardManager : MonoBehaviour
         newList.Add(1);
         newList.Add(2);
         newList.Add(3);
-        newList.Add(4);
-        newList.Add(5);
+
+        cardSelectorTransform = cardSelector.GetComponent<RectTransform>();
+        cardTransform = new Vector2();
 
         index = 0;
     }
@@ -26,7 +32,7 @@ public class CardManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F) && index<4)
+        if (Input.GetKeyDown(KeyCode.F) && index<2)
         {
             index++; 
         }
@@ -34,6 +40,11 @@ public class CardManager : MonoBehaviour
         {
             index--;
         }
+
+        cardTransform = new Vector2(-550 + (275 * newList[index]), 0);
+        cardSelectorTransform.anchoredPosition = cardTransform;
+
+        Debug.Log(cardSelectorTransform.anchoredPosition);
 
         boxText.text = newList[index].ToString();
     }

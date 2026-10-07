@@ -39,4 +39,6 @@ public class BoonManager : MonoBehaviour
         character.GetComponent<WeaponManager>().AddWeapon(newBoonWeapons[boonButton]);
         gameObject.SetActive(false);
     }
+
+    //CREATE SETACTIVE FUNCTION
 }
