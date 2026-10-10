@@ -920,6 +920,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardManager
   boxText: {fileID: 465896275}
+  card1: {fileID: 1661759483}
+  card2: {fileID: 91196820}
+  card3: {fileID: 596446613}
   cardSelector: {fileID: 1189666360}
 --- !u!1 &1189666358
 GameObject:
@@ -1451,9 +1454,33 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 7d459cf07d443a54ab79584cde90d13e, type: 2}
     - target: {fileID: 8107043489503943285, guid: c0e45eff2b432a649a9522d27b887577, type: 3}
+      propertyPath: boonPanel
+      value: 
+      objectReference: {fileID: 1985429763}
+    - target: {fileID: 8107043489503943285, guid: c0e45eff2b432a649a9522d27b887577, type: 3}
       propertyPath: weaponData
       value: 
       objectReference: {fileID: 11400000, guid: 7d459cf07d443a54ab79584cde90d13e, type: 2}
+    - target: {fileID: 8107043489503943285, guid: c0e45eff2b432a649a9522d27b887577, type: 3}
+      propertyPath: boonWeapons.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8107043489503943285, guid: c0e45eff2b432a649a9522d27b887577, type: 3}
+      propertyPath: 'boonWeapons.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 7d459cf07d443a54ab79584cde90d13e, type: 2}
+    - target: {fileID: 8107043489503943285, guid: c0e45eff2b432a649a9522d27b887577, type: 3}
+      propertyPath: 'boonWeapons.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: e9a9f2a7d3771314998f4608ae2a42b9, type: 2}
+    - target: {fileID: 8107043489503943285, guid: c0e45eff2b432a649a9522d27b887577, type: 3}
+      propertyPath: 'boonWeapons.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 8ee79c1d683da2c42984094404df94f1, type: 2}
+    - target: {fileID: 8107043489503943285, guid: c0e45eff2b432a649a9522d27b887577, type: 3}
+      propertyPath: 'boonWeapons.Array.data[3]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 23282ba2b1e6b1f479891e1a4b9ac67a, type: 2}
     - target: {fileID: 8892222727866319815, guid: c0e45eff2b432a649a9522d27b887577, type: 3}
       propertyPath: m_LocalPosition.x
       value: -5.08
@@ -1742,15 +1769,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a1f45580bb87d44592331b3afccf209, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BoonManager
-  boonWeapons:
-  - {fileID: 11400000, guid: 7d459cf07d443a54ab79584cde90d13e, type: 2}
-  - {fileID: 11400000, guid: e9a9f2a7d3771314998f4608ae2a42b9, type: 2}
-  - {fileID: 11400000, guid: 8ee79c1d683da2c42984094404df94f1, type: 2}
   boonImages:
   - {fileID: 2028022888}
   - {fileID: 1946115820}
   - {fileID: 1899247433}
   size: 3
+  blankImage: {fileID: 7482667652216324306, guid: 2ae507fe5fe5de642b9a7d28e9f85f95, type: 3}
   character: {fileID: 703595724}
 --- !u!114 &1985429766
 MonoBehaviour:
