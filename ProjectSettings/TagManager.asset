@@ -5,6 +5,13 @@ TagManager:
   serializedVersion: 3
   tags:
   - Walls
+  - Follower
+  - Static
+  - Ranged
+  - Sprinter
+  - Flyer
+  - Active-Patrol
+  - Inactive-Patrol
   layers:
   - Default
   - TransparentFX
