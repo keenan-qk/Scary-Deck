@@ -4,7 +4,7 @@ public class FanumWeapon : WeaponBase
 {
     public GameObject test;
 
-    public override void Attack()
+    public override void Attack() //will change soon
     {
         if (test.activeSelf)
         {

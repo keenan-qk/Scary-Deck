@@ -13,13 +13,12 @@ public class CardManager : MonoBehaviour
     public UnityEngine.UI.Image cardSelector;
     private RectTransform cardSelectorTransform;
     private Vector2 cardTransform;
-    private List<WeaponData> weapons;
-    private List<WeaponData> reserveWeapons;
+    private List<WeaponData> weapons; //cards in your hand
+    private List<WeaponData> reserveWeapons; //cards in your reserve (rest of deck)
 
     List<int> newList;
     int index;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         newList = new List<int>();
@@ -36,16 +35,15 @@ public class CardManager : MonoBehaviour
         index = 0;
     }
 
-    // Update is called once per frame
     void Update()
     {
         UpdateCardSelections();
 
-        if(Input.GetKeyDown(KeyCode.G) && index<2)
+        if(Input.GetKeyDown(KeyCode.G) && index<2) //moves card selector to right
         {
             index++; 
         }
-        if(Input.GetKeyDown(KeyCode.F) && index > 0)
+        if(Input.GetKeyDown(KeyCode.F) && index > 0) //moves card selector to left
         {
             index--;
         }
@@ -59,12 +57,10 @@ public class CardManager : MonoBehaviour
         {
             Attack(index);
         }
-        while ((weapons.Count < 3) && reserveWeapons.Count > 0)
-        {
-            
+        while ((weapons.Count < 3) && reserveWeapons.Count > 0) //draws cards from reserve deck into active hand
+        {   
             weapons.Add(reserveWeapons[0]);
-            reserveWeapons.Remove(reserveWeapons[0]);
-            
+            reserveWeapons.Remove(reserveWeapons[0]); 
         }
     }
 
@@ -81,7 +77,7 @@ public class CardManager : MonoBehaviour
         }
     }
 
-    private void UpdateCardSelections()
+    private void UpdateCardSelections() //sets all the cards in your hands to correct cards and images
     {
         if(weapons.Count > 0)
         {

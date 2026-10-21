@@ -9,14 +9,12 @@ public class Character : MonoBehaviour
 {
     Rigidbody2D rb;
     Vector3 movement;
-
     public float speed = 3f;
-
     public int maxHp;
     public int currentHp;
     public HPBar hp;
-    public GameObject boonPanel;
-    public List<WeaponData> boonWeapons;
+    public GameObject boonPanel; //where you're able to choose the boons
+    public List<WeaponData> boonWeapons; //list of available boons from the start
     public WeaponData weaponData;
 
     void Awake()
@@ -41,12 +39,12 @@ public class Character : MonoBehaviour
 
         rb.linearVelocity = movement;
 
-        if(Input.GetKeyDown(KeyCode.Q))
+        if(Input.GetKeyDown(KeyCode.Q)) //decreases health
         {
             currentHp -= 10;
             hp.setState(currentHp, maxHp);
         }
-        if(Input.GetKeyDown(KeyCode.R))
+        if(Input.GetKeyDown(KeyCode.R)) //opens up boon panel
         {
             boonPanel.GetComponent<BoonManager>().SendBoons(boonWeapons);
             boonPanel.SetActive(true);

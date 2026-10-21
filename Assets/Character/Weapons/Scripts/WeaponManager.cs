@@ -10,10 +10,10 @@ public class WeaponManager : MonoBehaviour
 
     void Start()
     {
-        weapons = new List<WeaponBase>(); //FOR LATER
+        weapons = new List<WeaponBase>(); //FOR LATER (probably not actually)
     }
 
-    public void AddWeapon(WeaponData weaponData)
+    public void AddWeapon(WeaponData weaponData) //CHANGE TO ATTACK FOR LATER
     {
         GameObject weaponGameObject = Instantiate(weaponData.weaponPrefab, weaponsTransform);
 
