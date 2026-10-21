@@ -15,8 +15,14 @@ public class Character : MonoBehaviour
     public int maxHp;
     public int currentHp;
     public HPBar hp;
-
+    public GameObject boonPanel;
+    public List<WeaponData> boonWeapons;
     public WeaponData weaponData;
+
+    void Awake()
+    {
+        boonPanel.GetComponent<BoonManager>().SendBoons(boonWeapons);
+    }
 
     void Start()
     {
@@ -35,10 +41,20 @@ public class Character : MonoBehaviour
 
         rb.linearVelocity = movement;
 
-        if (Input.GetKeyDown(KeyCode.Q))
+        if(Input.GetKeyDown(KeyCode.Q))
         {
             currentHp -= 10;
             hp.setState(currentHp, maxHp);
         }
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            boonPanel.GetComponent<BoonManager>().SendBoons(boonWeapons);
+            boonPanel.SetActive(true);
+        }
+    }
+
+    public void RemoveBoons(WeaponData boonWeapon)
+    {
+        boonWeapons.Remove(boonWeapon);
     }
 }
