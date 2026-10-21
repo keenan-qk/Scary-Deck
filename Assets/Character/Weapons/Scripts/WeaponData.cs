@@ -7,6 +7,8 @@ public class WeaponStats
 {
     public int damage;
 
+    public int projectileSpeed;
+
     public int timeToAttack;
 }
 

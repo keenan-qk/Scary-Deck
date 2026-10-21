@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 
 public class CardManager : MonoBehaviour
 {
+    public static bool isDuringPlay; //checks if you are currently in play
     public TMPro.TextMeshProUGUI boxText;
     public UnityEngine.UI.Image card1;
     public UnityEngine.UI.Image card2;
@@ -21,6 +22,8 @@ public class CardManager : MonoBehaviour
 
     void Start()
     {
+        isDuringPlay = false;
+
         newList = new List<int>();
         weapons = new List<WeaponData>();
         reserveWeapons = new List<WeaponData>();
@@ -53,9 +56,12 @@ public class CardManager : MonoBehaviour
 
         boxText.text = "Card: " + newList[index].ToString() + " | Reserves: " + reserveWeapons.Count;
 
-        if(Input.GetKeyDown(KeyCode.E))
+        if(Input.GetMouseButtonDown(0) && isDuringPlay == true)
         {
-            Attack(index);
+            Vector3 mouseScreenLoc = Input.mousePosition;
+            Vector3 mouseWorldLoc = Camera.main.ScreenToWorldPoint(mouseScreenLoc);
+            mouseWorldLoc.z = 0;
+            Attack(index, mouseWorldLoc);
         }
         while ((weapons.Count < 3) && reserveWeapons.Count > 0) //draws cards from reserve deck into active hand
         {   
@@ -64,11 +70,11 @@ public class CardManager : MonoBehaviour
         }
     }
 
-    private void Attack(int index)
+    private void Attack(int index, Vector3 mousePos)
     {
         if (index < weapons.Count)
         {
-            gameObject.GetComponent<WeaponManager>().AddWeapon(weapons[index]);
+            gameObject.GetComponent<WeaponManager>().CardAttack(weapons[index], mousePos);
             weapons.Remove(weapons[index]);
         }
         else

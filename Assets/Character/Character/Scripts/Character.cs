@@ -44,9 +44,10 @@ public class Character : MonoBehaviour
             currentHp -= 10;
             hp.setState(currentHp, maxHp);
         }
-        if(Input.GetKeyDown(KeyCode.R)) //opens up boon panel
+        if(Input.GetKeyDown(KeyCode.R)) //opens up boon panel (fix later)
         {
             boonPanel.GetComponent<BoonManager>().SendBoons(boonWeapons);
+            CardManager.isDuringPlay = false; //because boon panel is now active play has stopped
             boonPanel.SetActive(true);
         }
     }

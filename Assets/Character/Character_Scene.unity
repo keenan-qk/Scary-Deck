@@ -1463,7 +1463,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 7d459cf07d443a54ab79584cde90d13e, type: 2}
     - target: {fileID: 8107043489503943285, guid: c0e45eff2b432a649a9522d27b887577, type: 3}
       propertyPath: boonWeapons.Array.size
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8107043489503943285, guid: c0e45eff2b432a649a9522d27b887577, type: 3}
       propertyPath: 'boonWeapons.Array.data[0]'
@@ -1472,11 +1472,11 @@ PrefabInstance:
     - target: {fileID: 8107043489503943285, guid: c0e45eff2b432a649a9522d27b887577, type: 3}
       propertyPath: 'boonWeapons.Array.data[1]'
       value: 
-      objectReference: {fileID: 11400000, guid: e9a9f2a7d3771314998f4608ae2a42b9, type: 2}
+      objectReference: {fileID: 11400000, guid: 7d459cf07d443a54ab79584cde90d13e, type: 2}
     - target: {fileID: 8107043489503943285, guid: c0e45eff2b432a649a9522d27b887577, type: 3}
       propertyPath: 'boonWeapons.Array.data[2]'
       value: 
-      objectReference: {fileID: 11400000, guid: 8ee79c1d683da2c42984094404df94f1, type: 2}
+      objectReference: {fileID: 11400000, guid: 7d459cf07d443a54ab79584cde90d13e, type: 2}
     - target: {fileID: 8107043489503943285, guid: c0e45eff2b432a649a9522d27b887577, type: 3}
       propertyPath: 'boonWeapons.Array.data[3]'
       value: 

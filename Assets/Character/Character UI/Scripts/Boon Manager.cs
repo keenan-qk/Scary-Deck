@@ -86,6 +86,7 @@ public class BoonManager : MonoBehaviour
         }
 
         gameObject.SetActive(false); //very important, simplest way to make the boon selection process happen
+        CardManager.isDuringPlay = true; //because boon panel is off play has started again
         changeImages = true;
     }
 
