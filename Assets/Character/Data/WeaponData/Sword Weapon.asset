@@ -19,5 +19,7 @@ MonoBehaviour:
     projectileSpeed: 0
     attackBehavior:
       degreeOfRotation: 180
+      isRotate: 1
       timeToDestroy: 1
+      isOneTimeDestroy: 0
   weaponPrefab: {fileID: 1202870071440272443, guid: 7cf9c7c74396e3a4091d7f2b08903fb8, type: 3}

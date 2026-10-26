@@ -15,7 +15,6 @@ public class Character : MonoBehaviour
     public HPBar hp;
     public GameObject boonPanel; //where you're able to choose the boons
     public List<WeaponData> boonWeapons; //list of available boons from the start
-    public WeaponData weaponData;
 
     void Awake()
     {

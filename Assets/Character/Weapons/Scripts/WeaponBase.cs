@@ -1,15 +1,19 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class WeaponBase : MonoBehaviour //foundational base of ALL weapons
 {
     public WeaponData weaponData;
+    private HashSet<GameObject> triggeredObjects;
 
     float timer;
     float iniAngle; //the initial angle of the gameObject
 
     private void Start()
     {
+        triggeredObjects = new HashSet<GameObject>();
+
         timer = 0;
         if (weaponData.weaponStats.attackBehavior.isRotate) //change to is less than 90 degrees
         {
@@ -36,12 +40,25 @@ public abstract class WeaponBase : MonoBehaviour //foundational base of ALL weap
 
     private void OnTriggerEnter2D(Collider2D trigger)
     {
-        Enemy e = trigger.gameObject.GetComponent<Enemy>();
-
-        if (e != null)
+        if (weaponData.weaponStats.attackBehavior.isOneTimeDestroy)
         {
-            e.TakeDamage(weaponData.weaponStats.damage);
-            Destroy(gameObject);
+            Enemy e = trigger.gameObject.GetComponent<Enemy>();
+
+            if (e != null)
+            {
+                e.TakeDamage(weaponData.weaponStats.damage);
+                Destroy(gameObject);
+            }
+        }
+        else if (!triggeredObjects.Contains(trigger.gameObject))
+        {
+            triggeredObjects.Add(trigger.gameObject);
+            
+            Enemy e = trigger.gameObject.GetComponent<Enemy>();
+            if (e != null)
+            {
+                e.TakeDamage(weaponData.weaponStats.damage);
+            }
         }
     }
 
