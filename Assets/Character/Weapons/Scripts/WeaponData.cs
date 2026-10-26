@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 public class AttackBehavior
 {
     public float degreeOfRotation;
+    public bool isRotate;
 
     public float timeToDestroy;
 }

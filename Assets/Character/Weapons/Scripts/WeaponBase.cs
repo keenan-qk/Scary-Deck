@@ -11,8 +11,11 @@ public abstract class WeaponBase : MonoBehaviour //foundational base of ALL weap
     private void Start()
     {
         timer = 0;
-        iniAngle = gameObject.transform.eulerAngles.z + ((45-(weaponData.weaponStats.attackBehavior.degreeOfRotation/2)+45)); //offsets the angle a bit
-        gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, iniAngle));
+        if (weaponData.weaponStats.attackBehavior.isRotate) //change to is less than 90 degrees
+        {
+            iniAngle = gameObject.transform.eulerAngles.z + (45 - (weaponData.weaponStats.attackBehavior.degreeOfRotation / 2) + 45); //offsets the angle a bit
+            gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, iniAngle));
+        }
     }
 
     public void Update()
