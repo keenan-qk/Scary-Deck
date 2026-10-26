@@ -4,11 +4,13 @@ using System.Collections;
 public class Enemy : MonoBehaviour
 {
     public float speed; //Speed of enemy movement
+    public float damage; //ZACH ADDED THIS
+    public float attackSpeed; //ZACH ADDED THIS
     public int playerCloseness; //How close is the player from enemy. For ranged
     public Transform targetDestination; //Where the enemy will target/follow if it is meant to, generally the player
     public int alive; // Is the enemy object alive, 1 = yes, 0 = no
     public float startDelay; // How long enemies wait before moving at start of round
-
+    
     public string patrolType; // Patrol types for patroller enemies
     public float sprinterRecharge; // If enemy is a sprinter, recharge time for their charge attack
     public float sprinterChargeTime; // How long the sprinter will telegraph its attack
@@ -34,6 +36,7 @@ public class Enemy : MonoBehaviour
     private Vector3 direction; // Direction for enemy to head in
     private float distance; // Distance between enemy and player
     private float timer; // How long enemy waits between actions
+    private float attackTimer; //ZACH ADDED THIS, how long it take in between attacks
     private float sprinterRechargeTimer; // Timer for sprinter recharge time
     private Transform oldTargetPosition; // Old position of target for sprinters
     private string[] patrolList; // For choosing random patrol type for patrollers
@@ -49,6 +52,8 @@ public class Enemy : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        attackTimer = attackSpeed; //ZACH ADDED THIS
+
         direction = (targetDestination.position - transform.position).normalized;
         distance = Vector3.Distance(targetDestination.position, transform.position);
         patrolList = new string[] {"vertical", "horizontal", "diagonalLeft", "diagonalRight"};
@@ -130,10 +135,13 @@ public class Enemy : MonoBehaviour
 
     }
 
-    // Update is called once per frame
+    // Update is called once per frame //ZACH UPDATED THIS
     void Update()
     {
-
+        if (attackTimer >= 0)
+        {
+            attackTimer -= Time.deltaTime;
+        }
     }
 
     void FixedUpdate()
@@ -275,7 +283,7 @@ public class Enemy : MonoBehaviour
     {
         if (collision.gameObject == targetGameobject)
         {
-            Attack();
+            Attack(collision.gameObject);
         }
         else if (collision.gameObject.CompareTag("Walls"))
         {
@@ -284,9 +292,18 @@ public class Enemy : MonoBehaviour
 
     }
 
-    private void Attack() // Make coroutine later probly
+    public void TakeDamage(int damage) //ZACH ADDED THIS
     {
-        Debug.Log("Attack");
+        Debug.Log(damage);
+    }
+
+    private void Attack(GameObject cha) // Make coroutine later probly //ZACH CHANGED THIS
+    {
+        if(attackTimer <= 0)
+        {
+            cha.GetComponent<Character>().TakeDamage(damage);
+            attackTimer = attackSpeed;
+        }
     }
 
     private void RangedAttack() // Make coroutine later probly

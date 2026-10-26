@@ -34,6 +34,17 @@ public abstract class WeaponBase : MonoBehaviour //foundational base of ALL weap
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D trigger)
+    {
+        Enemy e = trigger.gameObject.GetComponent<Enemy>();
+
+        if (e != null)
+        {
+            e.TakeDamage(weaponData.weaponStats.damage);
+            Destroy(gameObject);
+        }
+    }
+
     public abstract void Attack(); //child classes will attack with this
 
     public void SetData(WeaponData wd, Vector3 weaponsTransform, Vector3 mousePos) //sets data of weapon to correct values

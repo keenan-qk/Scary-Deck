@@ -39,17 +39,18 @@ public class Character : MonoBehaviour
 
         rb.linearVelocity = movement;
 
-        if(Input.GetKeyDown(KeyCode.Q)) //decreases health
-        {
-            currentHp -= 10;
-            hp.setState(currentHp, maxHp);
-        }
         if(Input.GetKeyDown(KeyCode.R)) //opens up boon panel (fix later)
         {
             boonPanel.GetComponent<BoonManager>().SendBoons(boonWeapons);
             CardManager.isDuringPlay = false; //because boon panel is now active play has stopped
             boonPanel.SetActive(true);
         }
+    }
+
+    public void TakeDamage(float damage)
+    {
+        currentHp -= 10;
+        hp.setState(currentHp, maxHp);
     }
 
     public void RemoveBoons(WeaponData boonWeapon)
