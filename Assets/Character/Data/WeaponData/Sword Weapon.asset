@@ -10,12 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0a35ca84c7b43d54891b5bc15593c7e5, type: 3}
-  m_Name: test
+  m_Name: Sword Weapon
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
-  Name: testWep
-  boonImage: {fileID: 7959007142181842230, guid: cf4efc62f90cdb3489129919c6a903ff, type: 3}
+  Name: Sword Weapon
+  boonImage: {fileID: -8451752369490405339, guid: f4ff59a8b3cad274e8519b1fd45a9cdf, type: 3}
   weaponStats:
-    damage: 5
-    projectileSpeed: 5
-    timeToAttack: 5
-  weaponPrefab: {fileID: 5023498508797488310, guid: 163fdc1ba745917488eefd5ab98c8225, type: 3}
+    damage: 10
+    projectileSpeed: 0
+    attackBehavior:
+      degreeOfRotation: 180
+      timeToDestroy: 1
+  weaponPrefab: {fileID: 1202870071440272443, guid: 7cf9c7c74396e3a4091d7f2b08903fb8, type: 3}

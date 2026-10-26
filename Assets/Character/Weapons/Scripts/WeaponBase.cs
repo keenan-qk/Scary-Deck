@@ -6,15 +6,28 @@ public abstract class WeaponBase : MonoBehaviour //foundational base of ALL weap
     public WeaponData weaponData;
 
     float timer;
+    float iniAngle; //the initial angle of the gameObject
 
-    public void Update() //CHANGE THIS LATER
+    private void Start()
     {
-        timer -= Time.deltaTime;
+        timer = 0;
+        iniAngle = gameObject.transform.eulerAngles.z + ((45-(weaponData.weaponStats.attackBehavior.degreeOfRotation/2)+45)); //offsets the angle a bit
+        gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, iniAngle));
+    }
 
-        if (timer < 0f)
+    public void Update()
+    {
+        timer += Time.deltaTime;
+        if(weaponData.weaponStats.attackBehavior.degreeOfRotation != 0) //if object should not be rotated then it will not be rotated
         {
-            Attack();
-            timer = weaponData.weaponStats.timeToAttack;
+            gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, iniAngle+
+                (timer * (weaponData.weaponStats.attackBehavior.degreeOfRotation/weaponData.weaponStats.attackBehavior.timeToDestroy)))); 
+                //changes the rotation based on how long it takes for the attack to finish and the degrees of the attack
+        }
+
+        if (timer > weaponData.weaponStats.attackBehavior.timeToDestroy)
+        {
+            Destroy(gameObject);
         }
     }
 

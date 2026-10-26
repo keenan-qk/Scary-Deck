@@ -10,11 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0a35ca84c7b43d54891b5bc15593c7e5, type: 3}
-  m_Name: karlTest
+  m_Name: Fanum
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
-  Name: 
-  boonImage: {fileID: -7394462312032429828, guid: dd9848962de022e4dabfd61b2dcc4c7a, type: 3}
+  Name: Fanum Weapon
+  boonImage: {fileID: 7959007142181842230, guid: cf4efc62f90cdb3489129919c6a903ff, type: 3}
   weaponStats:
-    damage: 0
-    timeToAttack: 0
-  weaponPrefab: {fileID: 0}
+    damage: 5
+    projectileSpeed: 5
+    attackBehavior:
+      degreeOfRotation: 0
+      timeToDestroy: 2
+  weaponPrefab: {fileID: 5023498508797488310, guid: 163fdc1ba745917488eefd5ab98c8225, type: 3}
