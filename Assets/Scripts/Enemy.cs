@@ -4,7 +4,6 @@ using System.Collections;
 public class Enemy : MonoBehaviour
 {
     public float speed; //Speed of enemy movement
-    public float damage; //ZACH ADDED THIS
     public float attackSpeed; //ZACH ADDED THIS
     public int playerCloseness; //How close is the player from enemy. For ranged
     public Transform targetDestination; //Where the enemy will target/follow if it is meant to, generally the player
@@ -44,7 +43,7 @@ public class Enemy : MonoBehaviour
     private float attackTimer; //ZACH ADDED THIS, how long it take in between attacks
     private float sprinterRechargeTimer; // Timer for sprinter recharge time
     private Transform oldTargetPosition; // Old position of target for sprinters
-    private string patrolType; // Patrol types for patroller enemies
+    //private string patrolType; // Patrol types for patroller enemies
     private string[] patrolList; // For choosing random patrol type for patrollers
     private int patrolFlag = 1; // Flag for patroller movement, 1 for starting movement, -1 for opposite direction
     //private int alive; // Is the enemy object alive, 1 = yes, 0 = no
@@ -66,6 +65,7 @@ public class Enemy : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        Debug.Log(movementType);
         attackTimer = attackSpeed; //ZACH ADDED THIS
 
         //alive = 1;
@@ -157,6 +157,7 @@ public class Enemy : MonoBehaviour
         if (attackTimer >= 0)
         {
             attackTimer -= Time.deltaTime;
+        }
         if(health <= 0)
         {
             health = 0;
