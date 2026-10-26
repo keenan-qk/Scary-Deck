@@ -1,18 +1,13 @@
 using System;
 using UnityEngine;
 
-public abstract class WeaponBase : MonoBehaviour
+public abstract class WeaponBase : MonoBehaviour //foundational base of ALL weapons
 {
     public WeaponData weaponData;
 
     float timer;
 
-    void Start()
-    {
-        //NOTHING HERE YET
-    }
-
-    public void Update()
+    public void Update() //CHANGE THIS LATER
     {
         timer -= Time.deltaTime;
 
@@ -23,9 +18,9 @@ public abstract class WeaponBase : MonoBehaviour
         }
     }
 
-    public abstract void Attack();
+    public abstract void Attack(); //child classes will attack with this
 
-    public void SetData(WeaponData wd)
+    public void SetData(WeaponData wd, Vector3 weaponsTransform, Vector3 mousePos) //sets data of weapon to correct values
     {
         weaponData = wd;
     }

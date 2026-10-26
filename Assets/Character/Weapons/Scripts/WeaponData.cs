@@ -7,11 +7,13 @@ public class WeaponStats
 {
     public int damage;
 
+    public int projectileSpeed;
+
     public int timeToAttack;
 }
 
 [CreateAssetMenu]
-public class WeaponData : ScriptableObject
+public class WeaponData : ScriptableObject //THE STATS, EFFECTS, AND FUNCTIONALITY OF ALL WEAPONS
 {
     public string Name;
 
