@@ -6,14 +6,17 @@ public class Enemy : MonoBehaviour
     public float speed; //Speed of enemy movement
     public int playerCloseness; //How close is the player from enemy. For ranged
     public Transform targetDestination; //Where the enemy will target/follow if it is meant to, generally the player
-    public int alive; // Is the enemy object alive, 1 = yes, 0 = no
     public float startDelay; // How long enemies wait before moving at start of round
+    public int health;
+    public int damage;
 
-    public string patrolType; // Patrol types for patroller enemies
+    public float attackCooldown; // How long the enemy will wait to attack after attacking or moving
     public float sprinterRecharge; // If enemy is a sprinter, recharge time for their charge attack
-    public float sprinterChargeTime; // How long the sprinter will telegraph its attack
+    public float sprintChargeTime; // How long the sprinter will telegraph its attack
     public float moveDelay; // Enemy movement delay
-    public string movementType; //Type of enemy movement; ie. follower, static, ranged, sprinter, flying, active/inactive patroller
+
+
+    private string movementType; //Type of enemy movement; ie. follower, static, ranged, sprinter, flying, active/inactive patroller
     /*
      * Further explanation of each type of enemy movement can be found below
      * - Follower: an enemy that will directly follow the player as they move around the space
@@ -36,49 +39,59 @@ public class Enemy : MonoBehaviour
     private float timer; // How long enemy waits between actions
     private float sprinterRechargeTimer; // Timer for sprinter recharge time
     private Transform oldTargetPosition; // Old position of target for sprinters
+    private string patrolType; // Patrol types for patroller enemies
     private string[] patrolList; // For choosing random patrol type for patrollers
     private int patrolFlag = 1; // Flag for patroller movement, 1 for starting movement, -1 for opposite direction
+    //private int alive; // Is the enemy object alive, 1 = yes, 0 = no
 
     void Awake() // For initializing getComponents & stuff
     {
         rigidbody = GetComponent<Rigidbody2D>();
-        targetGameobject = targetDestination.gameObject;
-        movementType = movementType.ToLower(); // Convert to lower case for ease of comparison
+        if(targetDestination != null)
+        {
+            targetGameobject = targetDestination.gameObject;
+        }
+        else
+        {
+            Debug.LogError("Enemy does not have a target");
+        }
+        movementType = gameObject.tag;//movementType.ToLower(); // Convert to lower case for ease of comparison
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        //alive = 1;
         direction = (targetDestination.position - transform.position).normalized;
         distance = Vector3.Distance(targetDestination.position, transform.position);
         patrolList = new string[] {"vertical", "horizontal", "diagonalLeft", "diagonalRight"};
 
-        if (movementType.Equals("follower"))
+        if (movementType.Equals("Follower"))
         {
             timer = moveDelay;
             Debug.Log("Follower Movement");
 
         }
-        else if (movementType.Equals("static"))
+        else if (movementType.Equals("Static"))
         {
             Debug.Log("Static Movement");
         }
-        else if (movementType.Equals("ranged"))
+        else if (movementType.Equals("Ranged"))
         {
             timer = moveDelay;
             Debug.Log("Ranged Movement");
         }
-        else if (movementType.Equals("sprinter"))
+        else if (movementType.Equals("Sprinter"))
         {
             timer = moveDelay;
             Debug.Log("Sprinter Movement");
         }
-        else if (movementType.Equals("flyer"))
+        else if (movementType.Equals("Flyer"))
         {
             timer = moveDelay;
             Debug.Log("Flyer Movement");
         }
-        else if (movementType.Equals("active-patrol"))
+        else if (movementType.Equals("Active-Patrol"))
         {
             timer = moveDelay;
             int index = Random.Range(0, patrolList.Length);
@@ -103,9 +116,10 @@ public class Enemy : MonoBehaviour
                 direction = new Vector3(1, 1, 0);
             }
         }
-        else if (movementType.Equals("inactive-patrol"))
+        else if (movementType.Equals("Inactive-Patrol"))
         {
             int index = Random.Range(0, patrolList.Length);
+            timer = 0;
             patrolType = patrolList[index];
             Debug.Log(patrolType);
             Debug.Log("Inactive Patroller Movement");
@@ -133,7 +147,12 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if(health <= 0)
+        {
+            health = 0;
+            //alive = 0;
+            Destroy(gameObject);
+        }
     }
 
     void FixedUpdate()
@@ -155,36 +174,36 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-            if (movementType.Equals("follower"))
+            if (movementType.Equals("Follower"))
             {
                 FollowerMovement();
                 timer = moveDelay;
             }
-            else if (movementType.Equals("static"))
+            else if (movementType.Equals("Static"))
             {
                 StaticMovement();
             }
-            else if (movementType.Equals("ranged"))
+            else if (movementType.Equals("Ranged"))
             {
                 RangedMovement();
                 timer = moveDelay;
             }
-            else if (movementType.Equals("sprinter"))
+            else if (movementType.Equals("Sprinter"))
             {
                 timer = moveDelay;
                 SprinterMovement();
                 
             }
-            else if (movementType.Equals("flyer"))
+            else if (movementType.Equals("Flyer"))
             {
                 timer = moveDelay;
                 FlyerMovement();
             }
-            else if (movementType.Equals("active-patrol"))
+            else if (movementType.Equals("Active-Patrol"))
             {
                 ActivePatrolMovement();
             }
-            else if (movementType.Equals("inactive-patrol"))
+            else if (movementType.Equals("Inactive-Patrol"))
             {
                 InActivePatrolMovement();
             }
@@ -255,6 +274,7 @@ public class Enemy : MonoBehaviour
         {
             direction = (targetDestination.position - transform.position).normalized;
             patrolFlag = 0;
+            timer = moveDelay;
         }
         else
         {
@@ -300,5 +320,10 @@ public class Enemy : MonoBehaviour
         sprinterRechargeTimer = sprinterRecharge;
         timer = 0f; // I am not too sure about this tbh, i just feel like having both timers going at the same time is redundant
         // The above line can be deleted if we deem it better without it; was mainly for testing.
+    }
+
+    public void takeDamage(int damage)
+    {
+        health -= damage;
     }
 }
