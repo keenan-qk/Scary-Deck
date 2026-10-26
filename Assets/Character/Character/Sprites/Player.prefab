@@ -315,7 +315,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -8830879801838631096, guid: 7ed0c539c32cb60469138e3e0aecaba2, type: 3}
+  m_Sprite: {fileID: 1770765726443438732, guid: 044c7e2fdd5ccac56ad263a2c5d13881, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -342,6 +342,7 @@ MonoBehaviour:
   maxHp: 100
   currentHp: 100
   hp: {fileID: 3329376316567262919}
+  weaponData: {fileID: 0}
 --- !u!50 &4231837288737950854
 Rigidbody2D:
   serializedVersion: 5
