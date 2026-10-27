@@ -1,6 +1,16 @@
+using JetBrains.Annotations;
 using System;
 using UnityEngine;
 using UnityEngine.UIElements;
+
+[Serializable]
+public class AttackBehavior
+{
+    public float degreeOfRotation;
+    public bool isRotate;
+    public float timeToDestroy;
+    public bool isOneTimeDestroy;
+}
 
 [Serializable]
 public class WeaponStats
@@ -9,7 +19,9 @@ public class WeaponStats
 
     public int projectileSpeed;
 
-    public int timeToAttack;
+    public AttackBehavior attackBehavior;
+
+    //public int timeToAttack;
 }
 
 [CreateAssetMenu]
