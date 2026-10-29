@@ -5,18 +5,27 @@ public class Enemy : MonoBehaviour
 {
     public float speed; //Speed of enemy movement
     public float attackSpeed; // How long the enemy will wait to attack after attacking or moving
+    [Tooltip("Distance enemy can attack player from")]
     public float attackDistance; // Distance from player for enemy to attack, also used inversely for ranged enemies
+    [Tooltip("How close a player can get before active patrol follows")]
     public float playerCloseness; //How close is the player from enemy. For active patrollers
+    [Tooltip("Where enemy will target to follow")]
     public Transform targetDestination; //Where the enemy will target/follow if it is meant to, generally the player
+    [Tooltip("Delay at start of scene for enemy actions")]
     public float startDelay; // How long enemies wait before moving at start of round
 
+    [Tooltip("What type of patrol the enemy will take")]
     public string patrolType; // Patrol types for patroller enemies
     public int health; // Health of enemy
     public int damage; // How much damage each enemy attack does
 
+    [Tooltip("Recharge time for a sprinter's charge attack")]
     public float sprinterRecharge; // If enemy is a sprinter, recharge time for their charge attack
+    [Tooltip("How long the sprinter will telegraph its charge attack")]
     public float sprintChargingTime; // How long the sprinter will telegraph its attack
+    [Tooltip("How far the sprinter will go on its charge attack")]
     public float sprintChargeDistance; // How far the sprinter will go on their attack before they stop
+    [Tooltip("Delay for enemy to read player movement")]
     public float moveDelay; // Enemy movement delay
 
 
