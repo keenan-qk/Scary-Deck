@@ -4,16 +4,21 @@ using System.Collections;
 public class Enemy : MonoBehaviour
 {
     public float speed; //Speed of enemy movement
-    public int playerCloseness; //How close is the player from enemy. For ranged
+    public float attackSpeed; // How long the enemy will wait to attack after attacking or moving
+    public float attackDistance; // Distance from player for enemy to attack, also used inversely for ranged enemies
+    public float playerCloseness; //How close is the player from enemy. For active patrollers
     public Transform targetDestination; //Where the enemy will target/follow if it is meant to, generally the player
     public float startDelay; // How long enemies wait before moving at start of round
-    public int health;
-    public int damage;
 
-    public float attackCooldown; // How long the enemy will wait to attack after attacking or moving
+    public string patrolType; // Patrol types for patroller enemies
+    public int health; // Health of enemy
+    public int damage; // How much damage each enemy attack does
+
     public float sprinterRecharge; // If enemy is a sprinter, recharge time for their charge attack
-    public float sprintChargeTime; // How long the sprinter will telegraph its attack
+    public float sprintChargingTime; // How long the sprinter will telegraph its attack
+    public float sprintChargeDistance; // How far the sprinter will go on their attack before they stop
     public float moveDelay; // Enemy movement delay
+
 
 
     private string movementType; //Type of enemy movement; ie. follower, static, ranged, sprinter, flying, active/inactive patroller
@@ -31,25 +36,33 @@ public class Enemy : MonoBehaviour
          will break its patrol to attack the player
      * - Inactive Patroller: an enemy/obstacle which patrols a certain area of a room, no matter what
      */
-
     private Rigidbody2D rigidbody; // Rigidbody of enemy
-    private GameObject targetGameobject; // Target object of enemy, generally player
+    private GameObject character; // Target object of enemy, generally player
     private Vector3 direction; // Direction for enemy to head in
     private float distance; // Distance between enemy and player
+    private Vector3 sprinterOldPos; // Old position of sprinter before attack; for measuring distance of charge
+    private float sprinterDistance; // Distance between sprinter old and current positions
+
     private float timer; // How long enemy waits between actions
+    private float attackTimer; // How long it takes in between attacks
+    private float sprintChargeTimer; // Timer for sprint attacks to charge up
     private float sprinterRechargeTimer; // Timer for sprinter recharge time
-    private Transform oldTargetPosition; // Old position of target for sprinters
-    private string patrolType; // Patrol types for patroller enemies
+    private float stunTimer; // Timer for stunned enemies
+
+    private Vector3 oldTargetDirection = new Vector3(0,0,1); // Old position of target for sprinters
+    //private string patrolType; // Patrol types for patroller enemies
     private string[] patrolList; // For choosing random patrol type for patrollers
+
     private int patrolFlag = 1; // Flag for patroller movement, 1 for starting movement, -1 for opposite direction
-    //private int alive; // Is the enemy object alive, 1 = yes, 0 = no
+    private int sprinterChargeFlag = 0; // Flag for sprinter attacks; when sprinter is in range of player they stop moving to charge their attack, this flag prevents it from moving whilst charging up.
+    private int sprintingFlag = 0; // Flag for whether or not sprinter is sprinting
 
     void Awake() // For initializing getComponents & stuff
     {
         rigidbody = GetComponent<Rigidbody2D>();
         if(targetDestination != null)
         {
-            targetGameobject = targetDestination.gameObject;
+            character = targetDestination.gameObject;
         }
         else
         {
@@ -61,7 +74,10 @@ public class Enemy : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //alive = 1;
+        Debug.Log(movementType);
+        attackTimer = attackSpeed;
+        rigidbody.freezeRotation = true;
+
         direction = (targetDestination.position - transform.position).normalized;
         distance = Vector3.Distance(targetDestination.position, transform.position);
         patrolList = new string[] {"vertical", "horizontal", "diagonalLeft", "diagonalRight"};
@@ -74,6 +90,7 @@ public class Enemy : MonoBehaviour
         }
         else if (movementType.Equals("Static"))
         {
+            rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
             Debug.Log("Static Movement");
         }
         else if (movementType.Equals("Ranged"))
@@ -144,21 +161,30 @@ public class Enemy : MonoBehaviour
 
     }
 
-    // Update is called once per frame
     void Update()
     {
+        if (attackTimer >= 0)
+        {
+            attackTimer -= Time.deltaTime;
+        }
+        if (sprintChargeTimer >= 0)
+        {
+            sprintChargeTimer -= Time.deltaTime;
+        }
         if(health <= 0)
         {
             health = 0;
-            //alive = 0;
             Destroy(gameObject);
         }
     }
 
     void FixedUpdate()
     {
-        //direction = (targetDestination.position - transform.position).normalized;
         distance = Vector3.Distance(targetDestination.position, transform.position);
+        if (movementType.Equals("Sprinter") && sprintingFlag == 1)
+        {
+            sprinterDistance = Vector3.Distance(sprinterOldPos, transform.position);
+        }
 
         if (startDelay > 0f)
         {
@@ -168,9 +194,19 @@ public class Enemy : MonoBehaviour
         {
             timer -= Time.deltaTime;
         }
+        else if (sprinterDistance > sprintChargeDistance && sprintingFlag == 1)
+        {
+            rigidbody.linearVelocity = new Vector2(0f, 0f);
+            sprintingFlag = 0;
+            Debug.Log("Done Sprinting");
+        }
         else if (sprinterRechargeTimer > 0f)
         {
             sprinterRechargeTimer -= Time.deltaTime;
+        }
+        else if (stunTimer > 0f)
+        {
+            stunTimer -= Time.deltaTime;
         }
         else
         {
@@ -192,7 +228,7 @@ public class Enemy : MonoBehaviour
             {
                 timer = moveDelay;
                 SprinterMovement();
-                
+
             }
             else if (movementType.Equals("Flyer"))
             {
@@ -219,6 +255,11 @@ public class Enemy : MonoBehaviour
     {
         direction = (targetDestination.position - transform.position).normalized;
         rigidbody.linearVelocity = direction * speed;
+        if(distance <= attackDistance)
+        {
+            Attack(character);
+            rigidbody.linearVelocity = new Vector2(0f, 0f);
+        }
         return; 
     }
 
@@ -226,16 +267,20 @@ public class Enemy : MonoBehaviour
     void StaticMovement() // basically stays still
     {
         direction = (targetDestination.position - transform.position).normalized;
+        if(distance <= attackDistance)
+        {
+            Attack(character);
+        }
         return;
     }
 
     void RangedMovement() // Attacks at range, backs up if player gets too close
     {
         direction = (targetDestination.position - transform.position).normalized;
-        if (distance > playerCloseness)
+        if (distance > attackDistance)
         {
             rigidbody.linearVelocity = new Vector2(0f, 0f);
-            RangedAttack();
+            RangedAttack(character);
         }
         else
         {
@@ -248,9 +293,15 @@ public class Enemy : MonoBehaviour
     void SprinterMovement()
     {
         direction = (targetDestination.position - transform.position).normalized;
-        if (distance <= playerCloseness)
+        if (distance <= attackDistance || sprinterChargeFlag == 1)
         {
+            if(oldTargetDirection == new Vector3(0, 0, 1))
+            {
+                oldTargetDirection = direction;
+                sprintChargeTimer = sprintChargingTime;
+            }
             rigidbody.linearVelocity = new Vector2(0f, 0f);
+            sprinterChargeFlag = 1;
             sprinterChargeAttack();
         }
         else
@@ -281,6 +332,12 @@ public class Enemy : MonoBehaviour
             direction = direction * patrolFlag;
         }
         rigidbody.linearVelocity = direction * speed;
+
+        if (distance <= attackDistance)
+        {
+            Attack(character);
+            rigidbody.linearVelocity = new Vector2(0f, 0f);
+        }
         return; // Temporary
     }
 
@@ -293,37 +350,92 @@ public class Enemy : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.gameObject == targetGameobject)
+        if (collision.gameObject == character && !movementType.Equals("Sprinter"))
         {
-            Attack();
+            Attack(character);
         }
         else if (collision.gameObject.CompareTag("Walls"))
         {
             patrolFlag = -patrolFlag;
+            
         }
-
     }
 
-    private void Attack() // Make coroutine later probly
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("Attack");
+        if (collision.gameObject == character)
+        {
+            Attack(character);
+        }
+        else if(collision.gameObject.CompareTag("Walls"))
+        {
+            if (movementType.Equals("Sprinter"))
+            {
+                Stunned();
+            }
+        }
     }
 
-    private void RangedAttack() // Make coroutine later probly
+    public void TakeDamage(int damage) // Enemy takes damage
     {
-        Debug.Log("Ranged Attack");
-    }
-
-    private void sprinterChargeAttack()
-    {
-        Debug.Log("Charge attack");
-        sprinterRechargeTimer = sprinterRecharge;
-        timer = 0f; // I am not too sure about this tbh, i just feel like having both timers going at the same time is redundant
-        // The above line can be deleted if we deem it better without it; was mainly for testing.
-    }
-
-    public void takeDamage(int damage)
-    {
+        Debug.Log(damage);
         health -= damage;
     }
+
+    private void Attack(GameObject cha) // for basic enemy attacks
+    {
+        if(attackTimer <= 0)
+        {
+            Debug.Log("Attack");
+            cha.GetComponent<Character>().TakeDamage(damage);
+            if(movementType.Equals("Sprinter"))
+            {
+                attackTimer = 0f;
+            }
+            else
+            {
+                attackTimer = attackSpeed;
+            }
+        }
+    }
+
+    private void RangedAttack(GameObject cha) // Ranged enemy attack function
+    {
+        if(attackTimer <= 0)
+        {
+            cha.GetComponent<Character>().TakeDamage(damage);
+            attackTimer = attackSpeed;
+            Debug.Log("Ranged Attack");
+        }
+    }
+
+    private void sprinterChargeAttack() // Sprinter enemy attack function
+    {
+        if(sprintChargeTimer <= 0)
+        {
+            sprinterOldPos = gameObject.transform.position;
+            rigidbody.linearVelocity = oldTargetDirection * attackSpeed;
+            sprinterRechargeTimer = sprinterRecharge;
+            sprinterChargeFlag = 0;
+            sprintingFlag = 1;
+            oldTargetDirection = new Vector3(0, 0, 1);
+            Debug.Log("Charge Attack");
+        }
+        else
+        {
+            Debug.Log("Sprinter charging up");
+        }
+    }
+
+    public void Stunned() // Stun function so that enemy is paused when stunned
+    {
+        if (movementType.Equals("Sprinter"))
+        {
+            stunTimer = sprinterRecharge * 2f;
+            rigidbody.linearVelocity = new Vector2(0f, 0f);
+            sprintingFlag = 0;
+            Debug.Log("Stunned");
+        }
+    }
+
 }

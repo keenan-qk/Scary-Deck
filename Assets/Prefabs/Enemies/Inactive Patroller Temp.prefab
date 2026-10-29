@@ -171,12 +171,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   speed: 1
+  attackSpeed: 1
+  attackDistance: 0
   playerCloseness: 0
   targetDestination: {fileID: 0}
   startDelay: 1
+  patrolType: 
   health: 10
   damage: 1
-  attackCooldown: 0
   sprinterRecharge: 0
-  sprintChargeTime: 0
+  sprintChargingTime: 0
+  sprintChargeDistance: 0
   moveDelay: 1
