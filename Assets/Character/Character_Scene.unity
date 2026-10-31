@@ -982,7 +982,7 @@ GameObject:
   - component: {fileID: 1104233018}
   - component: {fileID: 1104233021}
   - component: {fileID: 1104233016}
-  - component: {fileID: 1104233020}
+  - component: {fileID: 1104233022}
   m_Layer: 0
   m_Name: Square
   m_TagString: Follower
@@ -1092,30 +1092,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1104233020
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1104233015}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a191f6edd1b6e34c9c52ea018706b90, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  speed: 1
-  attackSpeed: 5
-  playerCloseness: 0
-  targetDestination: {fileID: 703595728}
-  startDelay: 0
-  patrolType: 
-  health: 15
-  damage: 10
-  attackCooldown: 0
-  sprinterRecharge: 0
-  sprintChargeTime: 0
-  moveDelay: 0
 --- !u!61 &1104233021
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1162,6 +1138,30 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1104233022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1104233015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a191f6edd1b6e34c9c52ea018706b90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Enemy
+  speed: 1
+  attackSpeed: 5
+  playerCloseness: 0
+  targetDestination: {fileID: 703595728}
+  startDelay: 0
+  patrolType: 
+  health: 5
+  damage: 5
+  attackCooldown: 0
+  sprinterRecharge: 0
+  sprintChargeTime: 0
+  moveDelay: 0
 --- !u!1 &1189666358
 GameObject:
   m_ObjectHideFlags: 0
