@@ -14,7 +14,6 @@ public abstract class WeaponBase : MonoBehaviour //foundational base of ALL weap
 
     private void Start()
     {
-        Debug.Log(weaponData.name + ", " + weaponData.weaponStats.damage);
         goAgain = true;
         triggeredObjects = new HashSet<GameObject>();
 

@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 4694314399172817497}
   - component: {fileID: 2948644618656985207}
   - component: {fileID: 1932885983325545526}
-  - component: {fileID: 7991893726264001954}
   - component: {fileID: 4688307946172623356}
+  - component: {fileID: 5993074759711306564}
   m_Layer: 0
   m_Name: FireballWeapon
   m_TagString: Untagged
@@ -122,8 +122,22 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!61 &7991893726264001954
-BoxCollider2D:
+--- !u!114 &4688307946172623356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4827581194990682889}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9788f459e5ec88345a7dc898a62e2867, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Fireball
+  weaponData: {fileID: 0}
+  explosion: {fileID: 11400000, guid: 262b2279cdbd9e846a26eb466c9ffd95, type: 2}
+--- !u!70 &5993074759711306564
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -156,29 +170,6 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 3.74, y: 1.63}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 0.9675, y: 0.165}
-  m_EdgeRadius: 0
---- !u!114 &4688307946172623356
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4827581194990682889}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9788f459e5ec88345a7dc898a62e2867, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Fireball
-  weaponData: {fileID: 0}
-  explosion: {fileID: 11400000, guid: 262b2279cdbd9e846a26eb466c9ffd95, type: 2}
+  m_Offset: {x: 0.04572559, y: 0.0043555447}
+  m_Size: {x: 3.6485572, y: 1.4581863}
+  m_Direction: 1

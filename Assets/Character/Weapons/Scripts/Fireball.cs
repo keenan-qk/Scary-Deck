@@ -10,7 +10,7 @@ public class Fireball : WeaponBase
 
         WeaponBase weaponBase = weaponGameObject.GetComponent<WeaponBase>();
 
-        weaponBase.SetData(weaponData);
+        weaponBase.SetData(explosion);
 
         Rigidbody2D rb = GetComponent<Rigidbody2D>();
         rb.linearVelocity = Vector3.zero;
