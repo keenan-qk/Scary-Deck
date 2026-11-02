@@ -9,8 +9,8 @@ public class Enemy : MonoBehaviour
     public float attackDistance; // Distance from player for enemy to attack, also used inversely for ranged enemies
     [Tooltip("How close a player can get before active patrol follows")]
     public float playerCloseness; //How close is the player from enemy. For active patrollers
-    [Tooltip("Where enemy will target to follow")]
-    public Transform targetDestination; //Where the enemy will target/follow if it is meant to, generally the player
+    //[Tooltip("Where enemy will target to follow")]
+    //public Transform targetDestination; //Where the enemy will target/follow if it is meant to, generally the player
     [Tooltip("Delay at start of scene for enemy actions")]
     public float startDelay; // How long enemies wait before moving at start of round
 
@@ -18,6 +18,8 @@ public class Enemy : MonoBehaviour
     public string patrolType; // Patrol types for patroller enemies
     public int health; // Health of enemy
     public int damage; // How much damage each enemy attack does
+    [Tooltip("Enemy attack hitbox")]
+    public GameObject hitbox;
 
     [Tooltip("Recharge time for a sprinter's charge attack")]
     public float sprinterRecharge; // If enemy is a sprinter, recharge time for their charge attack
@@ -27,6 +29,11 @@ public class Enemy : MonoBehaviour
     public float sprintChargeDistance; // How far the sprinter will go on their attack before they stop
     [Tooltip("Delay for enemy to read player movement")]
     public float moveDelay; // Enemy movement delay
+    [Tooltip("How long enemy will stand still upon starting attack")]
+    public float attackDelay;
+
+    [Tooltip("Projectile that enemies with ranged attacks will shoot")]
+    public GameObject projectilePrefab; // Project prefab for instantiating
 
 
 
@@ -66,29 +73,37 @@ public class Enemy : MonoBehaviour
     private int sprinterChargeFlag = 0; // Flag for sprinter attacks; when sprinter is in range of player they stop moving to charge their attack, this flag prevents it from moving whilst charging up.
     private int sprintingFlag = 0; // Flag for whether or not sprinter is sprinting
 
+
     void Awake() // For initializing getComponents & stuff
     {
         rigidbody = GetComponent<Rigidbody2D>();
-        if(targetDestination != null)
+        GameObject[] temp = GameObject.FindGameObjectsWithTag("Player");
+        if (temp.Length != 0)
         {
-            character = targetDestination.gameObject;
+            //character = targetDestination.gameObject;
+            character = temp[0]; // Find player character in scene and then target them
         }
         else
         {
-            Debug.LogError("Enemy does not have a target");
+            Debug.LogError("Enemy cannot find player");
         }
-        movementType = gameObject.tag;//movementType.ToLower(); // Convert to lower case for ease of comparison
+        movementType = gameObject.tag;
+
+        if (hitbox != null)
+        { 
+            attackDistance = hitbox.transform.localScale.y;
+        }
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         Debug.Log(movementType);
-        attackTimer = attackSpeed;
+        attackTimer = 1;
         rigidbody.freezeRotation = true;
 
-        direction = (targetDestination.position - transform.position).normalized;
-        distance = Vector3.Distance(targetDestination.position, transform.position);
+        direction = (character.transform.position - transform.position).normalized;
+        distance = Vector3.Distance(character.transform.position, transform.position);
         patrolList = new string[] {"vertical", "horizontal", "diagonalLeft", "diagonalRight"};
 
         if (movementType.Equals("Follower"))
@@ -189,7 +204,10 @@ public class Enemy : MonoBehaviour
 
     void FixedUpdate()
     {
-        distance = Vector3.Distance(targetDestination.position, transform.position);
+        Collider2D thisCollider = gameObject.GetComponent<Collider2D>();
+        Collider2D playerCollider = character.GetComponent<Collider2D>();
+        distance = (thisCollider.Distance(playerCollider)).distance;
+
         if (movementType.Equals("Sprinter") && sprintingFlag == 1)
         {
             sprinterDistance = Vector3.Distance(sprinterOldPos, transform.position);
@@ -262,12 +280,16 @@ public class Enemy : MonoBehaviour
 
     void FollowerMovement() // follows after player
     {
-        direction = (targetDestination.position - transform.position).normalized;
+        direction = (character.transform.position - transform.position).normalized;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
         rigidbody.linearVelocity = direction * speed;
         if(distance <= attackDistance)
         {
+            Debug.Log("Proper attack");
             Attack(character);
             rigidbody.linearVelocity = new Vector2(0f, 0f);
+            timer = attackDelay;
         }
         return; 
     }
@@ -275,21 +297,38 @@ public class Enemy : MonoBehaviour
 
     void StaticMovement() // basically stays still
     {
-        direction = (targetDestination.position - transform.position).normalized;
-        if(distance <= attackDistance)
+        direction = (character.transform.position - transform.position).normalized;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+        if (projectilePrefab == null)
         {
-            Attack(character);
+            if (distance <= attackDistance)
+            {
+                Attack(character);
+            }
         }
+        else
+        {
+            if(distance <= attackDistance)
+            {
+                Attack(character);
+            }
+            else
+            {
+                RangedAttack(character, direction);
+            } 
+        }
+        
         return;
     }
 
     void RangedMovement() // Attacks at range, backs up if player gets too close
     {
-        direction = (targetDestination.position - transform.position).normalized;
+        direction = (character.transform.position - transform.position).normalized;
         if (distance > attackDistance)
         {
             rigidbody.linearVelocity = new Vector2(0f, 0f);
-            RangedAttack(character);
+            RangedAttack(character, direction);
         }
         else
         {
@@ -299,9 +338,9 @@ public class Enemy : MonoBehaviour
         return;
     }
 
-    void SprinterMovement()
+    void SprinterMovement() // Will charge at player when in range and chase otherwise; after charge attack they will rest
     {
-        direction = (targetDestination.position - transform.position).normalized;
+        direction = (character.transform.position - transform.position).normalized;
         if (distance <= attackDistance || sprinterChargeFlag == 1)
         {
             if(oldTargetDirection == new Vector3(0, 0, 1))
@@ -318,21 +357,23 @@ public class Enemy : MonoBehaviour
             rigidbody.linearVelocity = direction * speed;
         }
 
-        return; // Temporary
+        return; 
     }
 
     void FlyerMovement()
     {
-        direction = (targetDestination.position - transform.position).normalized;
+        direction = (character.transform.position - transform.position).normalized;
         rigidbody.linearVelocity = direction * speed;
-        return; // Temporary
+        return; 
     }
 
-    void ActivePatrolMovement()
+    void ActivePatrolMovement() // Will patrol a part of the map until player gets close; then will act like follower enemy
     {
         if (distance < playerCloseness || patrolFlag == 0)
         {
-            direction = (targetDestination.position - transform.position).normalized;
+            direction = (character.transform.position - transform.position).normalized;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
             patrolFlag = 0;
             timer = moveDelay;
         }
@@ -347,23 +388,23 @@ public class Enemy : MonoBehaviour
             Attack(character);
             rigidbody.linearVelocity = new Vector2(0f, 0f);
         }
-        return; // Temporary
+        return; 
     }
 
-    void InActivePatrolMovement()
+    void InActivePatrolMovement() // Will patrol a part of the map until dead
     {
         direction = direction * patrolFlag;
         rigidbody.linearVelocity = direction * speed;
-        return; // Temporary
+        return; 
     }
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.gameObject == character && !movementType.Equals("Sprinter"))
-        {
-            Attack(character);
-        }
-        else if (collision.gameObject.CompareTag("Walls"))
+        //if (collision.gameObject == character && !movementType.Equals("Sprinter"))
+        //{
+        //    Attack(character);
+        //}
+        if (collision.gameObject.CompareTag("Walls"))
         {
             patrolFlag = -patrolFlag;
             
@@ -372,11 +413,22 @@ public class Enemy : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject == character)
+        if (collision.gameObject == character && movementType.Equals("Sprinter"))
         {
-            Attack(character);
+            sprintAttack(character);
         }
-        else if(collision.gameObject.CompareTag("Walls"))
+        else if(collision.gameObject == character && movementType.Equals("Active-Patrol"))
+        {
+            if(patrolFlag != 0)
+            {
+                character.GetComponent<Character>().TakeDamage(damage);
+            }
+        }
+        else if (collision.gameObject == character && movementType.Equals("Inactive-Patrol"))
+        {
+            character.GetComponent<Character>().TakeDamage(damage);
+        }
+        else if (collision.gameObject.CompareTag("Walls"))
         {
             if (movementType.Equals("Sprinter"))
             {
@@ -395,8 +447,10 @@ public class Enemy : MonoBehaviour
     {
         if(attackTimer <= 0)
         {
-            Debug.Log("Attack");
-            cha.GetComponent<Character>().TakeDamage(damage);
+            EnemyAttack temp = hitbox.GetComponent<EnemyAttack>();
+            temp.MeleeAttack(damage);
+
+            //Debug.Log("Attack");
             if(movementType.Equals("Sprinter"))
             {
                 attackTimer = 0f;
@@ -408,11 +462,17 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void RangedAttack(GameObject cha) // Ranged enemy attack function
+    private void RangedAttack(GameObject cha, Vector3 direct) // Ranged enemy attack function
     {
         if(attackTimer <= 0)
         {
-            cha.GetComponent<Character>().TakeDamage(damage);
+            float angle = Mathf.Atan2(direct.y, direct.x) * Mathf.Rad2Deg;
+            projectilePrefab.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+            GameObject projectile = Instantiate(projectilePrefab, transform.position, projectilePrefab.transform.rotation);
+            //Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
+            //rb.linearVelocity = direct * speed;
+            RangedEnemyAttack temp = projectile.GetComponent<RangedEnemyAttack>();
+            temp.Shoot(direct);
             attackTimer = attackSpeed;
             Debug.Log("Ranged Attack");
         }
@@ -436,6 +496,12 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    private void sprintAttack(GameObject cha) // Does the actual damaging part of the sprint attack
+    {
+        Debug.Log("Sprint attack hit");
+        cha.GetComponent<Character>().TakeDamage(damage);
+    }
+
     public void Stunned() // Stun function so that enemy is paused when stunned
     {
         if (movementType.Equals("Sprinter"))
@@ -446,5 +512,6 @@ public class Enemy : MonoBehaviour
             Debug.Log("Stunned");
         }
     }
+
 
 }
