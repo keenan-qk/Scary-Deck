@@ -15,7 +15,6 @@ public class Character : MonoBehaviour
     public HPBar hp;
     //public GameObject boonPanel; //where you're able to choose the boons
     public List<WeaponData> boonWeapons; //list of available boons from the start
-    public WeaponData weaponData;
 
     void Awake()
     {
@@ -40,11 +39,6 @@ public class Character : MonoBehaviour
 
         rb.linearVelocity = movement;
 
-        if(Input.GetKeyDown(KeyCode.Q)) //decreases health
-        {
-            currentHp -= 10;
-            hp.setState(currentHp, maxHp);
-        }
         if(Input.GetKeyDown(KeyCode.R)) //opens up boon panel (fix later)
         {
             //boonPanel.GetComponent<BoonManager>().SendBoons(boonWeapons);

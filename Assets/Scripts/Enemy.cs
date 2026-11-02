@@ -185,6 +185,7 @@ public class Enemy : MonoBehaviour
 
     }
 
+    // Update is called once per frame //ZACH UPDATED THIS
     void Update()
     {
         if (attackTimer >= 0)
