@@ -10,8 +10,8 @@ public class Character : MonoBehaviour
     Rigidbody2D rb;
     Vector3 movement;
     public float speed = 3f;
-    public int maxHp;
-    public int currentHp;
+    public float maxHp;
+    public float currentHp;
     public HPBar hp;
     public GameObject boonPanel; //where you're able to choose the boons
     public List<WeaponData> boonWeapons; //list of available boons from the start
@@ -48,7 +48,7 @@ public class Character : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        currentHp -= 10;
+        currentHp -= damage;
         hp.setState(currentHp, maxHp);
     }
 

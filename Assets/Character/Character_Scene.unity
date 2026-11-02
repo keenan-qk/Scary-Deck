@@ -1151,13 +1151,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   speed: 1
-  attackSpeed: 5
+  attackSpeed: 1
   playerCloseness: 0
   targetDestination: {fileID: 703595728}
   startDelay: 0
   patrolType: 
   health: 5
-  damage: 5
+  damage: 50
   attackCooldown: 0
   sprinterRecharge: 0
   sprintChargeTime: 0
@@ -1710,15 +1710,15 @@ PrefabInstance:
     - target: {fileID: 8107043489503943285, guid: c0e45eff2b432a649a9522d27b887577, type: 3}
       propertyPath: 'boonWeapons.Array.data[0]'
       value: 
-      objectReference: {fileID: 11400000, guid: 7d459cf07d443a54ab79584cde90d13e, type: 2}
+      objectReference: {fileID: 11400000, guid: 262b2279cdbd9e846a26eb466c9ffd95, type: 2}
     - target: {fileID: 8107043489503943285, guid: c0e45eff2b432a649a9522d27b887577, type: 3}
       propertyPath: 'boonWeapons.Array.data[1]'
       value: 
-      objectReference: {fileID: 11400000, guid: 23282ba2b1e6b1f479891e1a4b9ac67a, type: 2}
+      objectReference: {fileID: 11400000, guid: 8ee79c1d683da2c42984094404df94f1, type: 2}
     - target: {fileID: 8107043489503943285, guid: c0e45eff2b432a649a9522d27b887577, type: 3}
       propertyPath: 'boonWeapons.Array.data[2]'
       value: 
-      objectReference: {fileID: 11400000, guid: 23282ba2b1e6b1f479891e1a4b9ac67a, type: 2}
+      objectReference: {fileID: 11400000, guid: 8ee79c1d683da2c42984094404df94f1, type: 2}
     - target: {fileID: 8107043489503943285, guid: c0e45eff2b432a649a9522d27b887577, type: 3}
       propertyPath: 'boonWeapons.Array.data[3]'
       value: 

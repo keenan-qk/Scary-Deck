@@ -10,11 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0a35ca84c7b43d54891b5bc15593c7e5, type: 3}
-  m_Name: otherTest1
+  m_Name: Fireball
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
-  Name: ot1
-  boonImage: {fileID: -828401524482849228, guid: d018d07f167c5a94d93bdf90208a08c1, type: 3}
+  Name: Fireball
+  boonImage: {fileID: -8127487528002223245, guid: 9fbdce323fda25b44a384cfef9093119, type: 3}
   weaponStats:
-    damage: 0
-    timeToAttack: 0
-  weaponPrefab: {fileID: 0}
+    damage: 10
+    projectileSpeed: 5
+    attackBehavior:
+      degreeOfRotation: 0
+      isRotate: 0
+      timeToDestroy: 1
+      isOneTimeDestroy: 0
+      isItem: 0
+      isSpawnObject: 1
+  weaponPrefab: {fileID: 4827581194990682889, guid: f91aaac6d4c8b854c81785a1690cf58b, type: 3}
