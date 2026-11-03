@@ -13,18 +13,19 @@ public class Character : MonoBehaviour
     public float maxHp;
     public float currentHp;
     public HPBar hp;
-    public GameObject boonPanel; //where you're able to choose the boons
+    //public GameObject boonPanel; //where you're able to choose the boons
     public List<WeaponData> boonWeapons; //list of available boons from the start
 
     void Awake()
     {
-        boonPanel.GetComponent<BoonManager>().SendBoons(boonWeapons);
+        //boonPanel.GetComponent<BoonManager>().SendBoons(boonWeapons);
     }
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         movement = new Vector3();
+        rb.freezeRotation = true;
 
         //GetComponent<WeaponManager>().AddWeapon(weaponData);
     }
@@ -40,13 +41,13 @@ public class Character : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.R)) //opens up boon panel (fix later)
         {
-            boonPanel.GetComponent<BoonManager>().SendBoons(boonWeapons);
+            //boonPanel.GetComponent<BoonManager>().SendBoons(boonWeapons);
             CardManager.isDuringPlay = false; //because boon panel is now active play has stopped
-            boonPanel.SetActive(true);
+            //boonPanel.SetActive(true);
         }
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(int damage)
     {
         currentHp -= damage;
         hp.setState(currentHp, maxHp);
