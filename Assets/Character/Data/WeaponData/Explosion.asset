@@ -20,7 +20,7 @@ MonoBehaviour:
     attackBehavior:
       degreeOfRotation: 0
       isRotate: 0
-      timeToDestroy: 5
+      timeToDestroy: 0.75
       isOneTimeDestroy: 0
       isItem: 0
       isSpawnObject: 0

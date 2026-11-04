@@ -22,15 +22,15 @@ public class BoonManager : MonoBehaviour
     void Start()
     {
         newBoonWeapons = new List<WeaponData>();
-        changeImages = false;
-
+        changeImages = true;
+        /*
         for (int i = 0; i < 3; i++) //first time the boon panel is used
         {
             boonPicker = Random.Range(0, oldBoonWeapons.Count);
             newBoonWeapons.Add(oldBoonWeapons[boonPicker]);
             oldBoonWeapons.Remove(oldBoonWeapons[boonPicker]);
             boonImages[i].sprite = newBoonWeapons[i].boonImage;
-        }
+        }*/
     }
 
     void Update()
