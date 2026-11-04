@@ -19,7 +19,7 @@ public class WeaponManager : MonoBehaviour
 
         WeaponBase weaponBase = weaponGameObject.GetComponent<WeaponBase>();
 
-        weaponBase.SetData(weaponData, weaponsTransform.transform.position, mousePos);
+        weaponBase.SetData(weaponData);
 
         DirectionOfAttack(weaponGameObject, weaponsTransform, mousePos, weaponData.weaponStats.projectileSpeed);
     }

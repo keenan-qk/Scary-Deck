@@ -98,6 +98,7 @@ public class Enemy : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        attackTimer = attackSpeed; //ZACH ADDED THIS
         Debug.Log(movementType);
         attackTimer = 1;
         rigidbody.freezeRotation = true;
