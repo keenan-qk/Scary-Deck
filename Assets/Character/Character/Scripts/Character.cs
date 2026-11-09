@@ -10,11 +10,11 @@ public class Character : MonoBehaviour
     Rigidbody2D rb;
     Vector3 movement;
     public float speed = 3f;
-    public int maxHp;
-    public int currentHp;
+    public float maxHp;
+    public float currentHp;
     public HPBar hp;
-    //public GameObject boonPanel; //where you're able to choose the boons
-    public List<WeaponData> boonWeapons; //list of available boons from the start
+    public GameObject boonPanel; //where you're able to choose the boons
+    private List<WeaponData> boonWeapons; //list of available boons from the start
 
     void Awake()
     {
@@ -39,11 +39,11 @@ public class Character : MonoBehaviour
 
         rb.linearVelocity = movement;
 
-        if(Input.GetKeyDown(KeyCode.R)) //opens up boon panel (fix later)
+        if(Input.GetKeyDown(KeyCode.E)) //opens up boon panel (fix later)
         {
-            //boonPanel.GetComponent<BoonManager>().SendBoons(boonWeapons);
+            boonPanel.GetComponent<BoonManager>().SendBoons(boonWeapons);
             CardManager.isDuringPlay = false; //because boon panel is now active play has stopped
-            //boonPanel.SetActive(true);
+            boonPanel.SetActive(true);
         }
     }
 
@@ -56,5 +56,10 @@ public class Character : MonoBehaviour
     public void RemoveBoons(WeaponData boonWeapon)
     {
         boonWeapons.Remove(boonWeapon);
+    }
+    
+    public void SendBoons(List<WeaponData> bWeapons) //Connected to CharacterBoons script
+    {
+        boonWeapons = bWeapons;
     }
 }
