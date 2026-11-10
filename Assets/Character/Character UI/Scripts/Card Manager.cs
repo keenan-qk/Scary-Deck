@@ -16,6 +16,7 @@ public class CardManager : MonoBehaviour
     private Vector2 cardTransform;
     private List<WeaponData> weapons; //cards in your hand
     private List<WeaponData> reserveWeapons; //cards in your reserve (rest of deck)
+    private List<WeaponData> discardWeapons;
 
     List<int> newList;
     int index;
@@ -27,6 +28,7 @@ public class CardManager : MonoBehaviour
         newList = new List<int>();
         weapons = new List<WeaponData>();
         reserveWeapons = new List<WeaponData>();
+        discardWeapons = new List<WeaponData>();
 
         newList.Add(1);
         newList.Add(2);
@@ -50,11 +52,15 @@ public class CardManager : MonoBehaviour
         {
             index--;
         }
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            Reload();
+        }
 
         cardTransform = new Vector2(-550 + (275 * newList[index]), 0);
         cardSelectorTransform.anchoredPosition = cardTransform;
 
-        boxText.text = "Card: " + newList[index].ToString() + " | Reserves: " + reserveWeapons.Count;
+        boxText.text = "Card: " + newList[index].ToString() + " | Reserves: " + reserveWeapons.Count + " | Discards: " + discardWeapons.Count; 
 
         if(Input.GetMouseButtonDown(0) && isDuringPlay == true)
         {
@@ -75,6 +81,7 @@ public class CardManager : MonoBehaviour
         if (index < weapons.Count)
         {
             gameObject.GetComponent<WeaponManager>().CardAttack(weapons[index], mousePos);
+            discardWeapons.Add(weapons[index]);
             weapons.Remove(weapons[index]);
         }
         else
@@ -121,5 +128,49 @@ public class CardManager : MonoBehaviour
         {
             reserveWeapons.Add(weaponData);
         }
+    }
+
+    private void Reload()
+    {
+        for(int i = 0; i < weapons.Count; i++)
+        {
+            discardWeapons.Add(weapons[0]);
+            weapons.Remove(weapons[0]);
+        }
+
+        for(int i = 0; i < reserveWeapons.Count; i++)
+        {
+            discardWeapons.Add(reserveWeapons[0]);
+            reserveWeapons.Remove(reserveWeapons[0]);
+        }
+
+        List<WeaponData> randomWeapons = new List<WeaponData>();
+
+        int count = discardWeapons.Count;
+        for(int i = 0; i < count; i++)
+        {
+            int index = Random.Range(0, discardWeapons.Count);
+            randomWeapons.Add(discardWeapons[index]);
+            discardWeapons.RemoveAt(index);
+        }
+
+        int loop = randomWeapons.Count;
+        if(loop > 3)
+        {
+            loop = 3;
+        }
+        for (int i = 0; i < loop; i++)
+        {
+            weapons.Add(randomWeapons[0]);
+            randomWeapons.RemoveAt(0);
+        }
+
+        for(int i = 0; i < randomWeapons.Count; i++)
+        {
+            reserveWeapons.Add(randomWeapons[0]);
+            randomWeapons.RemoveAt(0);
+        }
+
+        UpdateCardSelections();
     }
 }

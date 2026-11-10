@@ -10,11 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0a35ca84c7b43d54891b5bc15593c7e5, type: 3}
-  m_Name: karlTest
+  m_Name: Explosion
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
-  Name: 
-  boonImage: {fileID: -7394462312032429828, guid: dd9848962de022e4dabfd61b2dcc4c7a, type: 3}
+  Name: Explosion
+  boonImage: {fileID: -8092295105046505211, guid: aaddb32094f02214498970e3ddebd609, type: 3}
   weaponStats:
-    damage: 0
-    timeToAttack: 0
-  weaponPrefab: {fileID: 0}
+    damage: 2
+    projectileSpeed: 0
+    attackBehavior:
+      degreeOfRotation: 0
+      isRotate: 0
+      timeToDestroy: 0.75
+      isOneTimeDestroy: 0
+      isItem: 0
+      isSpawnObject: 0
+  weaponPrefab: {fileID: 1483885697219024571, guid: 1eddff04aecfc9c4faf7b00536982cd1, type: 3}
