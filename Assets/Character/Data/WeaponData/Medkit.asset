@@ -10,11 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0a35ca84c7b43d54891b5bc15593c7e5, type: 3}
-  m_Name: otherTest1
+  m_Name: Medkit
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
-  Name: ot1
-  boonImage: {fileID: -828401524482849228, guid: d018d07f167c5a94d93bdf90208a08c1, type: 3}
+  Name: medkit
+  boonImage: {fileID: 965360322618789697, guid: 02e230d148612784fb5422460a6fb027, type: 3}
   weaponStats:
-    damage: 0
-    timeToAttack: 0
-  weaponPrefab: {fileID: 0}
+    damage: 20
+    projectileSpeed: 0
+    attackBehavior:
+      degreeOfRotation: 0
+      isRotate: 0
+      timeToDestroy: 0.25
+      isOneTimeDestroy: 0
+      isItem: 1
+      isSpawnObject: 0
+  weaponPrefab: {fileID: 2157983049829344793, guid: 1adf2be868b9266409d4ec0df674308f, type: 3}

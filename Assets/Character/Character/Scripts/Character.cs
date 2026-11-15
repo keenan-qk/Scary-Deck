@@ -10,11 +10,11 @@ public class Character : MonoBehaviour
     Rigidbody2D rb;
     Vector3 movement;
     public float speed = 3f;
-    public int maxHp;
-    public int currentHp;
+    public float maxHp;
+    public float currentHp;
     public HPBar hp;
-    //public GameObject boonPanel; //where you're able to choose the boons
-    public List<WeaponData> boonWeapons; //list of available boons from the start
+    public GameObject boonPanel; //where you're able to choose the boons
+    private List<WeaponData> boonWeapons; //list of available boons from the start
 
     public bool stunned = false;
     private float stunTimer;
@@ -47,13 +47,13 @@ public class Character : MonoBehaviour
             movement *= speed;
 
             rb.linearVelocity = movement;
+        }
 
-            if (Input.GetKeyDown(KeyCode.R)) //opens up boon panel (fix later)
-            {
-                //boonPanel.GetComponent<BoonManager>().SendBoons(boonWeapons);
-                CardManager.isDuringPlay = false; //because boon panel is now active play has stopped
-                //boonPanel.SetActive(true);
-            }
+        if(Input.GetKeyDown(KeyCode.E)) //opens up boon panel (fix later)
+        {
+            boonPanel.GetComponent<BoonManager>().SendBoons(boonWeapons);
+            CardManager.isDuringPlay = false; //because boon panel is now active play has stopped
+            boonPanel.SetActive(true);
         }
         
     }
@@ -75,5 +75,10 @@ public class Character : MonoBehaviour
         rb.linearVelocity = new Vector2(0f, 0f);
         stunned = true;
         Debug.Log("Player is Stunned");
+    }
+    
+    public void SendBoons(List<WeaponData> bWeapons) //Connected to CharacterBoons script
+    {
+        boonWeapons = bWeapons;
     }
 }
