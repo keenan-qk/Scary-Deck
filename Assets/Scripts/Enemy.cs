@@ -9,8 +9,6 @@ public class Enemy : MonoBehaviour
     public float attackDistance; // Distance from player for enemy to attack, also used inversely for ranged enemies
     [Tooltip("How close a player can get before active patrol follows")]
     public float playerCloseness; //How close is the player from enemy. For active patrollers
-    //[Tooltip("Where enemy will target to follow")]
-    //public Transform targetDestination; //Where the enemy will target/follow if it is meant to, generally the player
     [Tooltip("Delay at start of scene for enemy actions")]
     public float startDelay; // How long enemies wait before moving at start of round
 
@@ -23,18 +21,23 @@ public class Enemy : MonoBehaviour
 
     [Tooltip("Recharge time for a sprinter's charge attack")]
     public float sprinterRecharge; // If enemy is a sprinter, recharge time for their charge attack
-    [Tooltip("How long the sprinter will telegraph its charge attack")]
-    public float sprintChargingTime; // How long the sprinter will telegraph its attack
+    [Tooltip("How long the enemy will telegraph its attack")]
+    public float attackChargingTime; // How long the enemy will telegraph its attack
     [Tooltip("How far the sprinter will go on its charge attack")]
     public float sprintChargeDistance; // How far the sprinter will go on their attack before they stop
     [Tooltip("Delay for enemy to read player movement")]
     public float moveDelay; // Enemy movement delay
-    [Tooltip("How long enemy will stand still upon starting attack")]
-    public float attackDelay;
 
     [Tooltip("Projectile that enemies with ranged attacks will shoot")]
     public GameObject projectilePrefab; // Project prefab for instantiating
-
+    [Tooltip("Color that object should be when not attacking/recharging/stunned")]
+    public Color baseColor;
+    [Tooltip("Color that enemy will be to telegraph")]
+    public Color attackColor;
+    [Tooltip("Color that enemy will be on recharge")]
+    public Color rechargeColor;
+    [Tooltip("Color that enemy will be when stunned")]
+    public Color stunColor;
 
 
     private string movementType; //Type of enemy movement; ie. follower, static, ranged, sprinter, flying, active/inactive patroller
@@ -61,26 +64,26 @@ public class Enemy : MonoBehaviour
 
     private float timer; // How long enemy waits between actions
     private float attackTimer; // How long it takes in between attacks
-    private float sprintChargeTimer; // Timer for sprint attacks to charge up
+    private float attackChargeTimer; // Timer for sprint attacks to charge up
     private float sprinterRechargeTimer; // Timer for sprinter recharge time
     private float stunTimer; // Timer for stunned enemies
 
     private Vector3 oldTargetDirection = new Vector3(0,0,1); // Old position of target for sprinters
-    //private string patrolType; // Patrol types for patroller enemies
     private string[] patrolList; // For choosing random patrol type for patrollers
 
-    private int patrolFlag = 1; // Flag for patroller movement, 1 for starting movement, -1 for opposite direction
-    private int sprinterChargeFlag = 0; // Flag for sprinter attacks; when sprinter is in range of player they stop moving to charge their attack, this flag prevents it from moving whilst charging up.
+    private int patrolFlag = 1; // Flag for patroller movement, 1 for starting movement, -1 for opposite direction, 0 for following player
+    private int attackChargeFlag = 0; // Flag for attacks charging; when enemy is in range of player they stop moving to charge their attack, this flag prevents it from moving whilst charging up.
     private int sprintingFlag = 0; // Flag for whether or not sprinter is sprinting
+    private Renderer rend; // For changing color of enemy
 
 
     void Awake() // For initializing getComponents & stuff
     {
         rigidbody = GetComponent<Rigidbody2D>();
+        rend = this.GetComponent<Renderer>();
         GameObject[] temp = GameObject.FindGameObjectsWithTag("Player");
         if (temp.Length != 0)
         {
-            //character = targetDestination.gameObject;
             character = temp[0]; // Find player character in scene and then target them
         }
         else
@@ -99,18 +102,15 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         Debug.Log(movementType);
-        attackTimer = 1;
+        attackTimer = attackSpeed;
         rigidbody.freezeRotation = true;
-
         direction = (character.transform.position - transform.position).normalized;
         distance = Vector3.Distance(character.transform.position, transform.position);
         patrolList = new string[] {"vertical", "horizontal", "diagonalLeft", "diagonalRight"};
-
         if (movementType.Equals("Follower"))
         {
             timer = moveDelay;
             Debug.Log("Follower Movement");
-
         }
         else if (movementType.Equals("Static"))
         {
@@ -139,7 +139,6 @@ public class Enemy : MonoBehaviour
             patrolType = patrolList[index];
             Debug.Log(patrolType);
             Debug.Log("Active Patroller Movement");
-
             if (patrolType.Equals("vertical")) // Patrolling in vertical line
             {
                 direction = Vector3.up;
@@ -164,7 +163,6 @@ public class Enemy : MonoBehaviour
             patrolType = patrolList[index];
             Debug.Log(patrolType);
             Debug.Log("Inactive Patroller Movement");
-
             if (patrolType.Equals("vertical")) // Patrolling in vertical line
             {
                 direction = Vector3.up;
@@ -182,7 +180,6 @@ public class Enemy : MonoBehaviour
                 direction = new Vector3(1, 1, 0);
             }
         }
-
     }
 
     // Update is called once per frame //ZACH UPDATED THIS
@@ -191,10 +188,6 @@ public class Enemy : MonoBehaviour
         if (attackTimer >= 0)
         {
             attackTimer -= Time.deltaTime;
-        }
-        if (sprintChargeTimer >= 0)
-        {
-            sprintChargeTimer -= Time.deltaTime;
         }
         if(health <= 0)
         {
@@ -213,7 +206,6 @@ public class Enemy : MonoBehaviour
         {
             sprinterDistance = Vector3.Distance(sprinterOldPos, transform.position);
         }
-
         if (startDelay > 0f)
         {
             startDelay -= Time.deltaTime;
@@ -227,6 +219,7 @@ public class Enemy : MonoBehaviour
             rigidbody.linearVelocity = new Vector2(0f, 0f);
             sprintingFlag = 0;
             Debug.Log("Done Sprinting");
+            rend.material.SetColor("_Color", rechargeColor);
         }
         else if (sprinterRechargeTimer > 0f)
         {
@@ -235,6 +228,10 @@ public class Enemy : MonoBehaviour
         else if (stunTimer > 0f)
         {
             stunTimer -= Time.deltaTime;
+        }
+        else if (attackChargeTimer > 0)
+        {
+            attackChargeTimer -= Time.deltaTime;
         }
         else
         {
@@ -256,7 +253,6 @@ public class Enemy : MonoBehaviour
             {
                 timer = moveDelay;
                 SprinterMovement();
-
             }
             else if (movementType.Equals("Flyer"))
             {
@@ -278,48 +274,54 @@ public class Enemy : MonoBehaviour
         }
     }
 
-
     void FollowerMovement() // follows after player
     {
         direction = (character.transform.position - transform.position).normalized;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
         rigidbody.linearVelocity = direction * speed;
-        if(distance <= attackDistance)
+        if(distance <= attackDistance || attackChargeFlag == 1)
         {
-            Debug.Log("Proper attack");
-            Attack(character);
+            if(attackChargeFlag == 0 && attackTimer <= 0)
+            {
+                attackChargeFlag = 1;
+                attackChargeTimer = attackChargingTime;
+                rend.material.SetColor("_Color", attackColor);
+            }
             rigidbody.linearVelocity = new Vector2(0f, 0f);
-            timer = attackDelay;
+            Attack(character);
+        }
+        else if(attackTimer <= 0)
+        {
+            rend.material.SetColor("_Color", baseColor);
         }
         return; 
     }
-
 
     void StaticMovement() // basically stays still
     {
         direction = (character.transform.position - transform.position).normalized;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
-        if (projectilePrefab == null)
+
+        if(distance <= attackDistance || attackChargeFlag == 1)
         {
-            if (distance <= attackDistance)
+            if(attackChargeFlag == 0 && attackTimer <= 0)
             {
-                Attack(character);
+                attackChargeFlag = 1;
+                attackChargeTimer = attackChargingTime;
+                rend.material.SetColor("_Color", attackColor);
             }
+            Attack(character);
         }
+        else if(projectilePrefab != null)
+        {
+            RangedAttack(character, direction);
+        } 
         else
         {
-            if(distance <= attackDistance)
-            {
-                Attack(character);
-            }
-            else
-            {
-                RangedAttack(character, direction);
-            } 
+            rend.material.SetColor("_Color", baseColor);
         }
-        
         return;
     }
 
@@ -342,26 +344,27 @@ public class Enemy : MonoBehaviour
     void SprinterMovement() // Will charge at player when in range and chase otherwise; after charge attack they will rest
     {
         direction = (character.transform.position - transform.position).normalized;
-        if (distance <= attackDistance || sprinterChargeFlag == 1)
+        if (distance <= attackDistance || attackChargeFlag == 1)
         {
             if(oldTargetDirection == new Vector3(0, 0, 1))
             {
                 oldTargetDirection = direction;
-                sprintChargeTimer = sprintChargingTime;
+                attackChargeTimer = attackChargingTime;
+                rend.material.SetColor("_Color", attackColor);
             }
             rigidbody.linearVelocity = new Vector2(0f, 0f);
-            sprinterChargeFlag = 1;
+            attackChargeFlag = 1;
             sprinterChargeAttack();
         }
         else
         {
+            rend.material.SetColor("_Color", baseColor);
             rigidbody.linearVelocity = direction * speed;
         }
-
         return; 
     }
 
-    void FlyerMovement()
+    void FlyerMovement() // Maybe remove? idk what purpose to really use this one for
     {
         direction = (character.transform.position - transform.position).normalized;
         rigidbody.linearVelocity = direction * speed;
@@ -384,10 +387,20 @@ public class Enemy : MonoBehaviour
         }
         rigidbody.linearVelocity = direction * speed;
 
-        if (distance <= attackDistance)
+        if (distance <= attackDistance || attackChargeFlag == 1)
         {
-            Attack(character);
+            if (attackChargeFlag == 0 && attackTimer <= 0)
+            {
+                attackChargeFlag = 1;
+                attackChargeTimer = attackChargingTime;
+                rend.material.SetColor("_Color", attackColor);
+            }
             rigidbody.linearVelocity = new Vector2(0f, 0f);
+            Attack(character);
+        }
+        else if (attackTimer <= 0)
+        {
+            rend.material.SetColor("_Color", baseColor);
         }
         return; 
     }
@@ -401,20 +414,15 @@ public class Enemy : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        //if (collision.gameObject == character && !movementType.Equals("Sprinter"))
-        //{
-        //    Attack(character);
-        //}
         if (collision.gameObject.CompareTag("Walls"))
         {
             patrolFlag = -patrolFlag;
-            
         }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject == character && movementType.Equals("Sprinter"))
+        if (collision.gameObject == character && (movementType.Equals("Sprinter") || movementType.Equals("Flyer")))
         {
             sprintAttack(character);
         }
@@ -446,12 +454,14 @@ public class Enemy : MonoBehaviour
 
     private void Attack(GameObject cha) // for basic enemy attacks
     {
-        if(attackTimer <= 0)
+        if(attackTimer <= 0 && attackChargeTimer <= 0)
         {
+            attackChargeFlag = 0;
+            rend.material.SetColor("_Color", rechargeColor);
             EnemyAttack temp = hitbox.GetComponent<EnemyAttack>();
+            Debug.Log("Attack");
             temp.MeleeAttack(damage);
-
-            //Debug.Log("Attack");
+            
             if(movementType.Equals("Sprinter"))
             {
                 attackTimer = 0f;
@@ -470,8 +480,6 @@ public class Enemy : MonoBehaviour
             float angle = Mathf.Atan2(direct.y, direct.x) * Mathf.Rad2Deg;
             projectilePrefab.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
             GameObject projectile = Instantiate(projectilePrefab, transform.position, projectilePrefab.transform.rotation);
-            //Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
-            //rb.linearVelocity = direct * speed;
             RangedEnemyAttack temp = projectile.GetComponent<RangedEnemyAttack>();
             temp.Shoot(direct);
             attackTimer = attackSpeed;
@@ -481,12 +489,13 @@ public class Enemy : MonoBehaviour
 
     private void sprinterChargeAttack() // Sprinter enemy attack function
     {
-        if(sprintChargeTimer <= 0)
+        if(attackChargeTimer <= 0)
         {
+            rend.material.SetColor("_Color", baseColor);
             sprinterOldPos = gameObject.transform.position;
             rigidbody.linearVelocity = oldTargetDirection * attackSpeed;
             sprinterRechargeTimer = sprinterRecharge;
-            sprinterChargeFlag = 0;
+            attackChargeFlag = 0;
             sprintingFlag = 1;
             oldTargetDirection = new Vector3(0, 0, 1);
             Debug.Log("Charge Attack");
@@ -510,9 +519,8 @@ public class Enemy : MonoBehaviour
             stunTimer = sprinterRecharge * 2f;
             rigidbody.linearVelocity = new Vector2(0f, 0f);
             sprintingFlag = 0;
+            rend.material.SetColor("_Color", stunColor);
             Debug.Log("Stunned");
         }
     }
-
-
 }

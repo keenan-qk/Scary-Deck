@@ -16,6 +16,9 @@ public class Character : MonoBehaviour
     //public GameObject boonPanel; //where you're able to choose the boons
     public List<WeaponData> boonWeapons; //list of available boons from the start
 
+    public bool stunned = false;
+    private float stunTimer;
+
     void Awake()
     {
         //boonPanel.GetComponent<BoonManager>().SendBoons(boonWeapons);
@@ -32,19 +35,27 @@ public class Character : MonoBehaviour
 
     void Update()
     {
-        movement.x = Input.GetAxisRaw("Horizontal");
-        movement.y = Input.GetAxisRaw("Vertical");
-
-        movement *= speed;
-
-        rb.linearVelocity = movement;
-
-        if(Input.GetKeyDown(KeyCode.R)) //opens up boon panel (fix later)
+        if (stunTimer >= 0f)
         {
-            //boonPanel.GetComponent<BoonManager>().SendBoons(boonWeapons);
-            CardManager.isDuringPlay = false; //because boon panel is now active play has stopped
-            //boonPanel.SetActive(true);
+            stunTimer -= Time.deltaTime;
         }
+        else
+        {
+            movement.x = Input.GetAxisRaw("Horizontal");
+            movement.y = Input.GetAxisRaw("Vertical");
+
+            movement *= speed;
+
+            rb.linearVelocity = movement;
+
+            if (Input.GetKeyDown(KeyCode.R)) //opens up boon panel (fix later)
+            {
+                //boonPanel.GetComponent<BoonManager>().SendBoons(boonWeapons);
+                CardManager.isDuringPlay = false; //because boon panel is now active play has stopped
+                //boonPanel.SetActive(true);
+            }
+        }
+        
     }
 
     public void TakeDamage(int damage)
@@ -56,5 +67,13 @@ public class Character : MonoBehaviour
     public void RemoveBoons(WeaponData boonWeapon)
     {
         boonWeapons.Remove(boonWeapon);
+    }
+
+    public void Stun(float time)
+    {
+        stunTimer = time;
+        rb.linearVelocity = new Vector2(0f, 0f);
+        stunned = true;
+        Debug.Log("Player is Stunned");
     }
 }
