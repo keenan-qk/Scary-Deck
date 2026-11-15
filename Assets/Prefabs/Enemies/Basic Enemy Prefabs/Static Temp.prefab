@@ -92,6 +92,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAttack
   time: 1
+  stuns: 0
+  stunTime: 0
 --- !u!1 &8301456023577595624
 GameObject:
   m_ObjectHideFlags: 0
@@ -274,8 +276,11 @@ MonoBehaviour:
   damage: 1
   hitbox: {fileID: 6031254381605435164}
   sprinterRecharge: 0
-  sprintChargingTime: 0
+  attackChargingTime: 1
   sprintChargeDistance: 0
   moveDelay: 1
-  attackDelay: 0.5
   projectilePrefab: {fileID: 0}
+  baseColor: {r: 1, g: 1, b: 1, a: 1}
+  attackColor: {r: 1, g: 0, b: 0, a: 1}
+  rechargeColor: {r: 0, g: 0.57254905, b: 0.07058824, a: 1}
+  stunColor: {r: 0, g: 0.7921569, b: 1, a: 1}
