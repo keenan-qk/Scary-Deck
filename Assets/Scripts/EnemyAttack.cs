@@ -5,6 +5,10 @@ public class EnemyAttack : MonoBehaviour
 {
     [Tooltip("How long enemy hitbox will remain active for upon attack")]
     public float time;
+    [Tooltip("Does the attack stun the player")]
+    public bool stuns;
+    [Tooltip("How long does attack stun player if at all")]
+    public float stunTime;
 
     private GameObject character;
     private int damage;
@@ -49,6 +53,10 @@ public class EnemyAttack : MonoBehaviour
     {
         Debug.Log("Attack has hit");
         cha.GetComponent<Character>().TakeDamage(damage);
+        if(stuns)
+        {
+            cha.GetComponent<Character>().Stun(stunTime);
+        }
     }
 
     public void MeleeAttack(int dam)

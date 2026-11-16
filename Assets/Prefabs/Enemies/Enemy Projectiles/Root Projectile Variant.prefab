@@ -14,7 +14,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8224676016170101801, guid: 352f26c33de60084f9ae6f5f93ad81f7, type: 3}
       propertyPath: moveDelay
-      value: 0
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: -8224676016170101801, guid: 352f26c33de60084f9ae6f5f93ad81f7, type: 3}
       propertyPath: trackPlayer
@@ -42,7 +42,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5328319612333854823, guid: 352f26c33de60084f9ae6f5f93ad81f7, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.8777654
+      value: 0.6542559
       objectReference: {fileID: 0}
     - target: {fileID: 5328319612333854823, guid: 352f26c33de60084f9ae6f5f93ad81f7, type: 3}
       propertyPath: m_LocalRotation.x
@@ -54,7 +54,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5328319612333854823, guid: 352f26c33de60084f9ae6f5f93ad81f7, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.47909066
+      value: -0.7562732
       objectReference: {fileID: 0}
     - target: {fileID: 5328319612333854823, guid: 352f26c33de60084f9ae6f5f93ad81f7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
