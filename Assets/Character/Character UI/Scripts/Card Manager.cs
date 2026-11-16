@@ -12,11 +12,14 @@ public class CardManager : MonoBehaviour
     public UnityEngine.UI.Image card2;
     public UnityEngine.UI.Image card3;
     public UnityEngine.UI.Image cardSelector;
+    public float reloadTime;
     private RectTransform cardSelectorTransform;
     private Vector2 cardTransform;
     private List<WeaponData> weapons; //cards in your hand
     private List<WeaponData> reserveWeapons; //cards in your reserve (rest of deck)
     private List<WeaponData> discardWeapons;
+    private bool reload;
+    private string reloadString;
 
     List<int> newList;
     int index;
@@ -60,9 +63,19 @@ public class CardManager : MonoBehaviour
         cardTransform = new Vector2(-550 + (275 * newList[index]), 0);
         cardSelectorTransform.anchoredPosition = cardTransform;
 
-        boxText.text = "Card: " + newList[index].ToString() + " | Reserves: " + reserveWeapons.Count + " | Discards: " + discardWeapons.Count; 
+        if (reload)
+        {
+            reloadString = "Reloading";
+        }
+        else
+        {
+            reloadString = "";
+        }
 
-        if(Input.GetMouseButtonDown(0) && isDuringPlay == true)
+        boxText.text = "Card: " + newList[index].ToString() + " Reserves: " + reserveWeapons.Count + " Discards: " + discardWeapons.Count
+                + " " + reloadString;
+
+        if (Input.GetMouseButtonDown(0) && isDuringPlay == true)
         {
             Vector3 mouseScreenLoc = Input.mousePosition;
             Vector3 mouseWorldLoc = Camera.main.ScreenToWorldPoint(mouseScreenLoc);
@@ -177,6 +190,22 @@ public class CardManager : MonoBehaviour
             randomWeapons.RemoveAt(0);
         }
 
+        StartCoroutine(Wait(reloadTime));
+
         UpdateCardSelections();
+    }
+
+    private IEnumerator Wait(float reloadTime)
+    {
+        Debug.Log("working");
+        isDuringPlay = false;
+        reload = true;
+
+        yield return new WaitForSeconds(reloadTime);
+
+        isDuringPlay = true;
+        reload = false;
+
+        yield return null;
     }
 }
