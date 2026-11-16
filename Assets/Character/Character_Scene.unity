@@ -1913,6 +1913,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Follower Temp
       objectReference: {fileID: 0}
+    - target: {fileID: 1859166119047937617, guid: 5e7d8c618c9f0914bb9ef5eca8e14742, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4617364574723922123, guid: 5e7d8c618c9f0914bb9ef5eca8e14742, type: 3}
       propertyPath: speed
       value: 0

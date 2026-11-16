@@ -154,6 +154,8 @@ public class CardManager : MonoBehaviour
             discardWeapons.RemoveAt(index);
         }
 
+        Debug.Log("1: " + randomWeapons.Count);
+
         int loop = randomWeapons.Count;
         if(loop > 3)
         {
@@ -165,7 +167,11 @@ public class CardManager : MonoBehaviour
             randomWeapons.RemoveAt(0);
         }
 
-        for(int i = 0; i < randomWeapons.Count; i++)
+        Debug.Log("2: " + randomWeapons.Count);
+
+        count = randomWeapons.Count;
+
+        for(int i = 0; i < count; i++)
         {
             reserveWeapons.Add(randomWeapons[0]);
             randomWeapons.RemoveAt(0);
