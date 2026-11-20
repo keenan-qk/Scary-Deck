@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Fireball
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   Name: Fireball
-  boonImage: {fileID: -8127487528002223245, guid: 9fbdce323fda25b44a384cfef9093119, type: 3}
+  boonImage: {fileID: 8550483767669509584, guid: ea543161a0e0dd440b46f9576e86e159, type: 3}
   weaponStats:
     damage: 10
     projectileSpeed: 5

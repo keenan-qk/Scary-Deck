@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5552939613457443524}
   - component: {fileID: 4214721183226889359}
-  - component: {fileID: 7867245680857164400}
+  - component: {fileID: 1364632082433724947}
   - component: {fileID: 4938487163361169695}
   m_Layer: 0
   m_Name: SwordWeapon
@@ -32,7 +32,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6136769654316296791}
+  - {fileID: 3462510330599773551}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &4214721183226889359
@@ -62,7 +62,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!70 &7867245680857164400
+--- !u!70 &1364632082433724947
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -96,8 +96,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -1.9963131}
-  m_Size: {x: 0.5, y: 4.0597696}
+  m_Offset: {x: 0, y: -2.2806256}
+  m_Size: {x: 0.5, y: 4.537297}
   m_Direction: 0
 --- !u!114 &4938487163361169695
 MonoBehaviour:
@@ -112,7 +112,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SwordWeapon
   weaponData: {fileID: 0}
---- !u!1 &4928798407239033866
+--- !u!1 &8755212035293783207
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -120,38 +120,38 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6136769654316296791}
-  - component: {fileID: 6997796363797322922}
+  - component: {fileID: 3462510330599773551}
+  - component: {fileID: 1291958189552052134}
   m_Layer: 0
-  m_Name: Firefly_0
+  m_Name: swerd_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6136769654316296791
+--- !u!4 &3462510330599773551
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4928798407239033866}
+  m_GameObject: {fileID: 8755212035293783207}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -2.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5552939613457443524}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &6997796363797322922
+--- !u!212 &1291958189552052134
 SpriteRenderer:
   serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4928798407239033866}
+  m_GameObject: {fileID: 8755212035293783207}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -191,14 +191,14 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 25
+  m_SortingOrder: 250
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -8451752369490405339, guid: f4ff59a8b3cad274e8519b1fd45a9cdf, type: 3}
+  m_Sprite: {fileID: -5578267495021479964, guid: 5d76bd61a4a062343a024520707d15ed, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.7675, y: 4.1775}
+  m_Size: {x: 1.3371428, y: 4.542857}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

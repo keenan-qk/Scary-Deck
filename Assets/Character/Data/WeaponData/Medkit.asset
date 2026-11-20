@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Medkit
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   Name: medkit
-  boonImage: {fileID: 965360322618789697, guid: 02e230d148612784fb5422460a6fb027, type: 3}
+  boonImage: {fileID: 8236975034255189491, guid: 9284aad76eec7e14992e0314e1c661c9, type: 3}
   weaponStats:
     damage: 20
     projectileSpeed: 0

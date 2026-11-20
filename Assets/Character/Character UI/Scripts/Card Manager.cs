@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
@@ -13,6 +14,11 @@ public class CardManager : MonoBehaviour
     public UnityEngine.UI.Image card3;
     public UnityEngine.UI.Image cardSelector;
     public float reloadTime;
+    public UnityEngine.UI.Image card1Black;
+    public UnityEngine.UI.Image card2Black;
+    public UnityEngine.UI.Image card3Black;
+    public GameObject reloadPanel;
+    public GameObject reloadWipe;
     private RectTransform cardSelectorTransform;
     private Vector2 cardTransform;
     private List<WeaponData> weapons; //cards in your hand
@@ -20,13 +26,16 @@ public class CardManager : MonoBehaviour
     private List<WeaponData> discardWeapons;
     private bool reload;
     private string reloadString;
+    private bool reloadBlack;
+    private float reloadBlackTimer;
+    private float reloadBlackTimerTime;
 
     List<int> newList;
     int index;
 
     void Start()
     {
-        isDuringPlay = false;
+        isDuringPlay = true;
 
         newList = new List<int>();
         weapons = new List<WeaponData>();
@@ -41,27 +50,73 @@ public class CardManager : MonoBehaviour
         cardTransform = new Vector2();
 
         index = 0;
+
+        reloadBlack = false;
+        reloadBlackTimer = 0;
+        reloadBlackTimerTime = .5f;
     }
 
     void Update()
     {
         UpdateCardSelections();
 
-        if(Input.GetKeyDown(KeyCode.G) && index<2) //moves card selector to right
+        if(Input.mouseScrollDelta.y == -1 && index<2)
         {
             index++; 
         }
-        if(Input.GetKeyDown(KeyCode.F) && index > 0) //moves card selector to left
+        if(Input.mouseScrollDelta.y == 1 && index>0)
         {
             index--;
         }
-        if(Input.GetKeyDown(KeyCode.R))
+        if(Input.GetKeyDown(KeyCode.R) && reload == false)
         {
             Reload();
         }
 
         cardTransform = new Vector2(-550 + (275 * newList[index]), 0);
         cardSelectorTransform.anchoredPosition = cardTransform;
+
+        if(reload)
+        {
+            isDuringPlay = true;
+            reloadPanel.SetActive(true);
+            reloadBlackTimer += Time.deltaTime;
+            reloadWipe.transform.localScale = new Vector3(1f - (reloadBlackTimer / reloadTime), 1f, 1f);
+
+            if(reloadBlackTimer > reloadTime)
+            {
+                reloadBlackTimer = 0;
+            }
+        }
+
+        if(reload == false)
+        {
+            reloadPanel.SetActive(false);
+        }
+
+        if(reloadBlack)
+        {
+            card1Black.gameObject.SetActive(true);
+            card2Black.gameObject.SetActive(true);
+            card3Black.gameObject.SetActive(true);
+
+            reloadBlackTimer += Time.deltaTime;
+
+            card1Black.transform.localScale = new Vector3(1f, 1f - (reloadBlackTimer / reloadBlackTimerTime), 1f);
+            card2Black.transform.localScale = new Vector3(1f, 1f - (reloadBlackTimer / reloadBlackTimerTime), 1f);
+            card3Black.transform.localScale = new Vector3(1f, 1f - (reloadBlackTimer / reloadBlackTimerTime), 1f);
+
+            if (reloadBlackTimer > reloadBlackTimerTime)
+            {
+                reloadBlackTimer = 0;
+                reloadBlack = false;
+
+                card1Black.gameObject.SetActive(false);
+                card2Black.gameObject.SetActive(false);
+                card3Black.gameObject.SetActive(false);
+
+            }
+        }
 
         if (reload)
         {
@@ -75,12 +130,13 @@ public class CardManager : MonoBehaviour
         boxText.text = "Card: " + newList[index].ToString() + " Reserves: " + reserveWeapons.Count + " Discards: " + discardWeapons.Count
                 + " " + reloadString;
 
-        if (Input.GetMouseButtonDown(0) && isDuringPlay == true)
+        if (Input.GetMouseButtonDown(0) && isDuringPlay == true && reloadBlack == false && reload == false)
         {
             Vector3 mouseScreenLoc = Input.mousePosition;
             Vector3 mouseWorldLoc = Camera.main.ScreenToWorldPoint(mouseScreenLoc);
             mouseWorldLoc.z = 0;
             Attack(index, mouseWorldLoc);
+            reloadBlack = true;
         }
         while ((weapons.Count < 3) && reserveWeapons.Count > 0) //draws cards from reserve deck into active hand
         {   
@@ -197,7 +253,6 @@ public class CardManager : MonoBehaviour
 
     private IEnumerator Wait(float reloadTime)
     {
-        Debug.Log("working");
         isDuringPlay = false;
         reload = true;
 

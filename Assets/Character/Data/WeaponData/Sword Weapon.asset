@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Sword Weapon
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   Name: Sword Weapon
-  boonImage: {fileID: -8451752369490405339, guid: f4ff59a8b3cad274e8519b1fd45a9cdf, type: 3}
+  boonImage: {fileID: -8529158869573905357, guid: 64aec148f133e0342887202490310614, type: 3}
   weaponStats:
     damage: 10
     projectileSpeed: 0
@@ -22,4 +22,6 @@ MonoBehaviour:
       isRotate: 1
       timeToDestroy: 1
       isOneTimeDestroy: 0
+      isItem: 0
+      isSpawnObject: 0
   weaponPrefab: {fileID: 1202870071440272443, guid: 7cf9c7c74396e3a4091d7f2b08903fb8, type: 3}

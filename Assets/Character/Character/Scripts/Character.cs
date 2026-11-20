@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.WSA;
 
 public class Character : MonoBehaviour
 {
@@ -41,8 +42,25 @@ public class Character : MonoBehaviour
         }
         else
         {
+            if(CardManager.isDuringPlay == false)
+            {
+                rb.linearVelocity = new Vector3(0, 0, 0);
+                return;
+            }
+
             movement.x = Input.GetAxisRaw("Horizontal");
             movement.y = Input.GetAxisRaw("Vertical");
+
+            /*
+            if (movement.x == -1)
+            {
+                gameObject.transform.localScale = new Vector3(-1f, 1f, 1f);
+            }
+            else if (movement.x == 1)
+            {
+                gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
+            }
+            */
 
             movement *= speed;
 
@@ -80,5 +98,12 @@ public class Character : MonoBehaviour
     public void SendBoons(List<WeaponData> bWeapons) //Connected to CharacterBoons script
     {
         boonWeapons = bWeapons;
+    }
+
+    public void ActivateBoonPanel()
+    {
+        boonPanel.GetComponent<BoonManager>().SendBoons(boonWeapons);
+        CardManager.isDuringPlay = false; //because boon panel is now active play has stopped
+        boonPanel.SetActive(true);
     }
 }
