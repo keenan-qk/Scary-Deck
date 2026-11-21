@@ -28,15 +28,19 @@ public class RoomManager : MonoBehaviour
 
 	private int bossRoomIndex = 7; 
 
-	[Header("Rooms Per Run")]
+	private EnemySpawnManager enemySpawner; // Grey added this
+
+    [Header("Rooms Per Run")]
 	[SerializeField] private int roomsPerRun = 5;
 
 	public static RoomManager Instance { get; private set; }
 
 	private void Awake()
 	{
-		Instance = this; 
-	}
+		Instance = this;
+		enemySpawner = (GameObject.Find("EnemyManager")).GetComponent<EnemySpawnManager>(); // Grey added this
+        enemySpawner.RoomSetup(roomPrefabs); // Grey added this
+    }
 
 	private void Start()
 	{
@@ -50,9 +54,10 @@ public class RoomManager : MonoBehaviour
 
 		for (int attempt = 0; attempt < 51; attempt++)
 		{
-			GenerateRooms(); 
+			GenerateRooms();
+            enemySpawner.AddRooms();
 
-			if (GenerateConnections())
+            if (GenerateConnections())
 			{
 				roomsGenerated = true; 
 				Debug.Log("Rooms generated successfully!");
@@ -142,7 +147,8 @@ public class RoomManager : MonoBehaviour
 
 		currentRoom = newRoom;
 		currentRoomIndex = roomIndex;
-		ConfigureRoomDoors(currentRoom, currentRoomIndex); 
+        enemySpawner.Spawn(currentRoomIndex);
+        ConfigureRoomDoors(currentRoom, currentRoomIndex); 
 
 		if (entryDoor != null)
 		{
@@ -186,7 +192,7 @@ public class RoomManager : MonoBehaviour
 
 		selectedRooms.RemoveAll(index => index == bossRoomIndex); 
 		selectedRooms.Add(bossRoomIndex);
-	}
+    }
 
 	public void CheckRoomDoors()
 	{
@@ -410,5 +416,10 @@ public class RoomManager : MonoBehaviour
 			doors[i] = doors[randomIndex]; 
 			doors[randomIndex] = temp; 
 		}
+	}
+
+	public int GetRoomNum()
+	{
+		return currentRoomIndex;
 	}
 }
