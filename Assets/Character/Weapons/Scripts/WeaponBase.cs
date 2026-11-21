@@ -1,6 +1,9 @@
+using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor.Analytics;
 using UnityEngine;
 
 public abstract class WeaponBase : MonoBehaviour //foundational base of ALL weapons
@@ -11,12 +14,16 @@ public abstract class WeaponBase : MonoBehaviour //foundational base of ALL weap
     float timer;
     float iniAngle; //the initial angle of the gameObject
     private bool goAgain;
+    private Vector2 initVel;
 
-    private void Start()
+    private void Awake()
     {
         goAgain = true;
         triggeredObjects = new HashSet<GameObject>();
+    }
 
+    private void Start()
+    {
         if(weaponData.weaponStats.attackBehavior.isItem)
         {
             gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
@@ -39,7 +46,7 @@ public abstract class WeaponBase : MonoBehaviour //foundational base of ALL weap
                 (timer * (weaponData.weaponStats.attackBehavior.degreeOfRotation / weaponData.weaponStats.attackBehavior.timeToDestroy))));
             //changes the rotation based on how long it takes for the attack to finish and the degrees of the attack
         }
-        
+
         if (timer > weaponData.weaponStats.attackBehavior.timeToDestroy && goAgain)
         {
             if(weaponData.weaponStats.attackBehavior.isSpawnObject)
@@ -108,11 +115,53 @@ public abstract class WeaponBase : MonoBehaviour //foundational base of ALL weap
         weaponData = wd;
     }
 
-    public void Fist(Vector3 loc)
+    public void Stall(float stall)
+    {
+        gameObject.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(0, 0);
+
+        StartCoroutine(Wait2(weaponData.weaponStats.attackBehavior.timeToDestroy*stall));
+    }
+
+    private IEnumerator Wait2(float stall)
+    {
+        yield return new WaitForSeconds(stall);
+
+        gameObject.GetComponent<Rigidbody2D>().linearVelocity = initVel;
+
+        yield return null;
+    }
+
+    public void StartFist()
     {
         Character c = GameObject.FindWithTag("Player").GetComponent<Character>();
 
-        c.Fist(loc);
+        c.FistOn();
+    }
+
+    public void Fist()
+    {
+        Vector3 loc = gameObject.transform.position;
+
+        Character c = GameObject.FindWithTag("Player").GetComponent<Character>();
+
+        c.Fist(loc, weaponData.weaponStats.projectileSpeed, weaponData.weaponStats.attackBehavior.timeToDestroy);
+
+
+        StartCoroutine(Wait3());
+    }
+
+    private IEnumerator Wait3()
+    {
+        yield return new WaitForSeconds(weaponData.weaponStats.attackBehavior.timeToDestroy);
+
+        Destroy(gameObject);
+
+        yield return null;
+    }
+
+    public void SetInitVel(Vector2 linearVelocity)
+    {
+        initVel = linearVelocity;
     }
 }
 

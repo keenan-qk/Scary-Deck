@@ -20,6 +20,7 @@ public class Character : MonoBehaviour
     public bool stunned = false;
     private float stunTimer;
     private float slowDown;
+    private bool fist;
 
     void Awake()
     {
@@ -28,6 +29,8 @@ public class Character : MonoBehaviour
 
     void Start()
     {
+        fist = false;
+
         slowDown = 1f;
 
         rb = GetComponent<Rigidbody2D>();
@@ -43,7 +46,7 @@ public class Character : MonoBehaviour
         {
             stunTimer -= Time.deltaTime;
         }
-        else
+        else if(!fist)
         {
             if(CardManager.isDuringPlay == false)
             {
@@ -65,7 +68,7 @@ public class Character : MonoBehaviour
 
             movement *= speed * slowDown;
 
-            //rb.linearVelocity = movement;
+            rb.linearVelocity = movement;
         }
 
         if(Input.GetKeyDown(KeyCode.E)) //opens up boon panel (fix later)
@@ -88,8 +91,11 @@ public class Character : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        currentHp -= damage;
-        hp.setState(currentHp, maxHp);
+        if(!fist)
+        {
+            currentHp -= damage;
+            hp.setState(currentHp, maxHp);
+        }
     }
 
     public void RemoveBoons(WeaponData boonWeapon)
@@ -117,12 +123,28 @@ public class Character : MonoBehaviour
         boonPanel.SetActive(true);
     }
 
-    public void Fist(Vector3 endPoint)
+    public void FistOn()
+    {
+        fist = true;
+    }
+
+    public void Fist(Vector3 endPoint, float proSpeed, float times)
     {
         Vector2 direction = (endPoint - gameObject.transform.position).normalized;
 
         Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
 
-        rb.linearVelocity = endPoint;
+        rb.linearVelocity = direction*proSpeed;
+
+        StartCoroutine(Wait(times));
+    }
+
+    IEnumerator Wait(float times)
+    {
+        yield return new WaitForSeconds(times);
+
+        fist = false;
+
+        yield return null;
     }
 }

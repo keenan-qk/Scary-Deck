@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0a35ca84c7b43d54891b5bc15593c7e5, type: 3}
-  m_Name: Fist
+  m_Name: FistAttack
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
-  Name: Fanum Weapon
-  boonImage: {fileID: 7959007142181842230, guid: cf4efc62f90cdb3489129919c6a903ff, type: 3}
+  Name: Fist Attack
+  boonImage: {fileID: -2807050885168057640, guid: 90bc3a6aa2b5a5547a25cf7df804c38f, type: 3}
   weaponStats:
-    damage: 5
-    projectileSpeed: 5
+    damage: 10
+    projectileSpeed: 20
     attackBehavior:
       degreeOfRotation: 0
       isRotate: 0
-      timeToDestroy: 2
-      isOneTimeDestroy: 1
+      timeToDestroy: 1
+      isOneTimeDestroy: 0
       isItem: 0
       isSpawnObject: 0
-  weaponPrefab: {fileID: 7350400285082197774, guid: 92e7af3f2f04a7b4b9513d77a5eb531b, type: 3}
+  weaponPrefab: {fileID: 7350400285082197774, guid: aefa8c3e102bcd147b83e126dceaaf78, type: 3}
