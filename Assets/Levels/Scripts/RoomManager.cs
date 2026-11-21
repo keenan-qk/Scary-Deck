@@ -55,8 +55,9 @@ public class RoomManager : MonoBehaviour
 		for (int attempt = 0; attempt < 51; attempt++)
 		{
 			GenerateRooms();
-            enemySpawner.AddRooms();
+            enemySpawner.AddRooms(); // Grey added this
 
+			//Debug.Log("Attempt - #" + attempt); // Grey added this
             if (GenerateConnections())
 			{
 				roomsGenerated = true; 
@@ -86,15 +87,18 @@ public class RoomManager : MonoBehaviour
 	{
 		foreach (RoomConnection connection in connections)
 		{
+			
 			// Travel from Room A to Room B 
 			if (currentRoomIndex == connection.roomAIndex && direction == connection.doorA)
 			{
-				LoadRoom(connection.roomBIndex, connection.doorB); 
+                //Debug.Log("Room A - " + connection.roomAIndex + " Room B - " + connection.roomBIndex); // Grey Added this
+                LoadRoom(connection.roomBIndex, connection.doorB); 
 				return; 
 			}
 			// Travel from Room B to Room A 
 			if (currentRoomIndex == connection.roomBIndex && direction == connection.doorB)
 			{
+				//Debug.Log("Room A - " + connection.roomAIndex + " Room B - " + connection.roomBIndex);// Grey added this
 				LoadRoom(connection.roomAIndex, connection.doorA); 
 				return; 
 			}
@@ -117,6 +121,7 @@ public class RoomManager : MonoBehaviour
 		}
 
 		GameObject newRoom = Instantiate(roomPrefabs[roomIndex], Vector3.zero, Quaternion.identity);
+		Debug.Log("Loading Room " + roomPrefabs[roomIndex].name);
 
 		RoomDoor entryDoor = null; 
 
@@ -389,20 +394,41 @@ public class RoomManager : MonoBehaviour
 
 			foreach (RoomConnection connection in connections)
 			{
+
 				if ((connection.roomAIndex == roomIndex && connection.doorA == door.Direction) || 
 				(connection.roomBIndex == roomIndex && connection.doorB == door.Direction))
 				{
 					connected = true;
-					break; 
+					if(connection.doorA == door.Direction) // Grey Added This
+					{
+						//Debug.Log(
+						//	"Room: " + roomPrefabs[roomIndex].name +
+						//	" | Door: " + door.Direction +
+						//		" | Connected: " + connected +
+						//		" | Connected Room: " + roomPrefabs[connection.roomBIndex].name
+						//);
+                    }
+                    if (connection.doorB == door.Direction) // Grey Added This
+                    {
+                        //Debug.Log(
+                        //    "Room: " + roomPrefabs[roomIndex].name +
+                        //    " | Door: " + door.Direction +
+                        //        " | Connected: " + connected +
+                        //        " | Connected Room: " + roomPrefabs[connection.roomAIndex].name
+                        //);
+                    }
+                    break; 
 				}
+
 			}
 
 			door.SetConnected(connected);
-			Debug.Log(
-   				"Room: " + roomPrefabs[roomIndex].name +
-				" | Door: " + door.Direction +
-    				" | Connected: " + connected
-			);
+			//Debug.Log(
+   //				"Room: " + roomPrefabs[roomIndex].name +
+			//	" | Door: " + door.Direction +
+   // 				" | Connected: " + connected 
+			//);
+
 		}
 	}
 

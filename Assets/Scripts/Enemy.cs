@@ -111,35 +111,35 @@ public class Enemy : MonoBehaviour
         if (movementType.Equals("Follower"))
         {
             timer = moveDelay;
-            Debug.Log("Follower Movement");
+            //Debug.Log("Follower Movement");
         }
         else if (movementType.Equals("Static"))
         {
             rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
-            Debug.Log("Static Movement");
+            //Debug.Log("Static Movement");
         }
         else if (movementType.Equals("Ranged"))
         {
             timer = moveDelay;
-            Debug.Log("Ranged Movement");
+            //Debug.Log("Ranged Movement");
         }
         else if (movementType.Equals("Sprinter"))
         {
             timer = moveDelay;
-            Debug.Log("Sprinter Movement");
+            //Debug.Log("Sprinter Movement");
         }
         else if (movementType.Equals("Flyer"))
         {
             timer = moveDelay;
-            Debug.Log("Flyer Movement");
+            //Debug.Log("Flyer Movement");
         }
         else if (movementType.Equals("Active-Patrol"))
         {
             timer = moveDelay;
             int index = Random.Range(0, patrolList.Length);
             patrolType = patrolList[index];
-            Debug.Log(patrolType);
-            Debug.Log("Active Patroller Movement");
+            //Debug.Log(patrolType);
+            //Debug.Log("Active Patroller Movement");
             if (patrolType.Equals("vertical")) // Patrolling in vertical line
             {
                 direction = Vector3.up;
@@ -162,8 +162,8 @@ public class Enemy : MonoBehaviour
             int index = Random.Range(0, patrolList.Length);
             timer = 0;
             patrolType = patrolList[index];
-            Debug.Log(patrolType);
-            Debug.Log("Inactive Patroller Movement");
+            //Debug.Log(patrolType);
+            //Debug.Log("Inactive Patroller Movement");
             if (patrolType.Equals("vertical")) // Patrolling in vertical line
             {
                 direction = Vector3.up;
