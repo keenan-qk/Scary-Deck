@@ -6,4 +6,8 @@ public class SwordWeapon : WeaponBase
     {
         Debug.Log("attacking with sword");
     }
+    public override void OnDeath()
+    {
+
+    }
 }

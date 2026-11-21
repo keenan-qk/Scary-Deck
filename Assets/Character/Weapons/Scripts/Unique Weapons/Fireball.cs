@@ -26,4 +26,8 @@ public class Fireball : WeaponBase
 
         yield return null;
     }
+    public override void OnDeath()
+    {
+
+    }
 }

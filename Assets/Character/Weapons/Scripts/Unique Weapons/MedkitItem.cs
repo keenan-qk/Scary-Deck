@@ -6,4 +6,9 @@ public class MedkitItem : WeaponBase
     {
         
     }
+
+    public override void OnDeath()
+    {
+
+    }
 }

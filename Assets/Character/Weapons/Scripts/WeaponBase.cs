@@ -49,6 +49,7 @@ public abstract class WeaponBase : MonoBehaviour //foundational base of ALL weap
             }
             else
             {
+                OnDeath();
                 Destroy(gameObject);
             }
         }
@@ -100,9 +101,18 @@ public abstract class WeaponBase : MonoBehaviour //foundational base of ALL weap
 
     public abstract void Attack(); //child classes will attack with this
 
+    public abstract void OnDeath();
+
     public void SetData(WeaponData wd) //sets data of weapon to correct values
     {
         weaponData = wd;
+    }
+
+    public void Fist(Vector3 loc)
+    {
+        Character c = GameObject.FindWithTag("Player").GetComponent<Character>();
+
+        c.Fist(loc);
     }
 }
 

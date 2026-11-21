@@ -6,4 +6,8 @@ public class Explosion : WeaponBase
     {
         
     }
+    public override void OnDeath()
+    {
+
+    }
 }

@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a35ca84c7b43d54891b5bc15593c7e5, type: 3}
+  m_Name: Fist
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponData
+  Name: Fanum Weapon
+  boonImage: {fileID: 7959007142181842230, guid: cf4efc62f90cdb3489129919c6a903ff, type: 3}
+  weaponStats:
+    damage: 5
+    projectileSpeed: 5
+    attackBehavior:
+      degreeOfRotation: 0
+      isRotate: 0
+      timeToDestroy: 2
+      isOneTimeDestroy: 1
+      isItem: 0
+      isSpawnObject: 0
+  weaponPrefab: {fileID: 7350400285082197774, guid: 92e7af3f2f04a7b4b9513d77a5eb531b, type: 3}

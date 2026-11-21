@@ -19,6 +19,7 @@ public class Character : MonoBehaviour
 
     public bool stunned = false;
     private float stunTimer;
+    private float slowDown;
 
     void Awake()
     {
@@ -27,6 +28,8 @@ public class Character : MonoBehaviour
 
     void Start()
     {
+        slowDown = 1f;
+
         rb = GetComponent<Rigidbody2D>();
         movement = new Vector3();
         rb.freezeRotation = true;
@@ -51,20 +54,18 @@ public class Character : MonoBehaviour
             movement.x = Input.GetAxisRaw("Horizontal");
             movement.y = Input.GetAxisRaw("Vertical");
 
-            /*
-            if (movement.x == -1)
-            {
-                gameObject.transform.localScale = new Vector3(-1f, 1f, 1f);
-            }
-            else if (movement.x == 1)
-            {
-                gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
-            }
-            */
+            //if (movement.x == -1)
+            //{
+            //    gameObject.transform.rotation = Quaternion.Euler(0, 180, 0);
+            //}
+            //else if (movement.x == 1)
+            //{
+            //    gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
+            //}
 
-            movement *= speed;
+            movement *= speed * slowDown;
 
-            rb.linearVelocity = movement;
+            //rb.linearVelocity = movement;
         }
 
         if(Input.GetKeyDown(KeyCode.E)) //opens up boon panel (fix later)
@@ -72,6 +73,15 @@ public class Character : MonoBehaviour
             boonPanel.GetComponent<BoonManager>().SendBoons(boonWeapons);
             CardManager.isDuringPlay = false; //because boon panel is now active play has stopped
             boonPanel.SetActive(true);
+        }
+
+        if(Input.GetKeyDown(KeyCode.Q))
+        {
+            Vector2 direction = (new Vector3(3, 3, 0) - gameObject.transform.position).normalized;
+
+            Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
+
+            rb.linearVelocity = direction * 5f;
         }
         
     }
@@ -105,5 +115,14 @@ public class Character : MonoBehaviour
         boonPanel.GetComponent<BoonManager>().SendBoons(boonWeapons);
         CardManager.isDuringPlay = false; //because boon panel is now active play has stopped
         boonPanel.SetActive(true);
+    }
+
+    public void Fist(Vector3 endPoint)
+    {
+        Vector2 direction = (endPoint - gameObject.transform.position).normalized;
+
+        Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
+
+        rb.linearVelocity = endPoint;
     }
 }

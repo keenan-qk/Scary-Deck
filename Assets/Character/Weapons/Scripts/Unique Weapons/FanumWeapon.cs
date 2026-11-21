@@ -6,4 +6,8 @@ public class FanumWeapon : WeaponBase
     {
         
     }
+    public override void OnDeath()
+    {
+
+    }
 }
