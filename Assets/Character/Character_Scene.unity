@@ -348,6 +348,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 241381236}
   m_CullTransparentMesh: 1
+--- !u!1 &820800195 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8691955271073399217, guid: 47c014bf0886bcc4f89f40f866b6e7f6, type: 3}
+  m_PrefabInstance: {fileID: 6074136025219540827}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &1043215564 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5924461347118555535, guid: 47c014bf0886bcc4f89f40f866b6e7f6, type: 3}
@@ -1050,6 +1055,10 @@ PrefabInstance:
       propertyPath: reloadPanel
       value: 
       objectReference: {fileID: 1653233271}
+    - target: {fileID: 8236886253063814623, guid: 47c014bf0886bcc4f89f40f866b6e7f6, type: 3}
+      propertyPath: MIRRORED_WEAPONS
+      value: 
+      objectReference: {fileID: 820800195}
     - target: {fileID: 8767039548255151213, guid: 47c014bf0886bcc4f89f40f866b6e7f6, type: 3}
       propertyPath: m_LocalPosition.x
       value: -5.15

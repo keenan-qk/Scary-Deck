@@ -18,6 +18,7 @@ public class Character : MonoBehaviour
     private List<WeaponData> boonWeapons; //list of available boons from the start
 
     public bool stunned = false;
+    public GameObject MIRRORED_WEAPONS;
     private float stunTimer;
     private float slowDown;
     private bool fist;
@@ -57,14 +58,16 @@ public class Character : MonoBehaviour
             movement.x = Input.GetAxisRaw("Horizontal");
             movement.y = Input.GetAxisRaw("Vertical");
 
-            //if (movement.x == -1)
-            //{
-            //    gameObject.transform.rotation = Quaternion.Euler(0, 180, 0);
-            //}
-            //else if (movement.x == 1)
-            //{
-            //    gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
-            //}
+            if (movement.x == -1)
+            {
+                gameObject.transform.rotation = Quaternion.Euler(0, 180, 0);
+                MIRRORED_WEAPONS.gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
+            }
+            else if (movement.x == 1)
+            {
+                gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
+                MIRRORED_WEAPONS.gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
+            }
 
             movement *= speed * slowDown;
 
@@ -126,6 +129,7 @@ public class Character : MonoBehaviour
     public void FistOn()
     {
         fist = true;
+        rb.linearVelocity = Vector3.zero;
     }
 
     public void Fist(Vector3 endPoint, float proSpeed, float times)
