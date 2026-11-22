@@ -1,5 +1,6 @@
 using UnityEngine;
-using System.Collections.Generic; 
+using System.Collections.Generic;
+using System.Collections;
 
 [System.Serializable]
 public class RoomConnection
@@ -33,6 +34,8 @@ public class RoomManager : MonoBehaviour
 
 	public static RoomManager Instance { get; private set; }
 
+	private bool tryGoThroughDoorWait;
+
 	private void Awake()
 	{
 		Instance = this; 
@@ -40,6 +43,8 @@ public class RoomManager : MonoBehaviour
 
 	private void Start()
 	{
+		tryGoThroughDoorWait = false;
+
 		if (player == null)
 		{
 			Debug.LogError("Player reference is missing!"); 
@@ -79,21 +84,39 @@ public class RoomManager : MonoBehaviour
 
 	public void TryGoThroughDoor(DoorDirection direction)
 	{
+		if(tryGoThroughDoorWait)
+		{
+			return;
+		}
+
 		foreach (RoomConnection connection in connections)
 		{
 			// Travel from Room A to Room B 
 			if (currentRoomIndex == connection.roomAIndex && direction == connection.doorA)
 			{
-				LoadRoom(connection.roomBIndex, connection.doorB); 
-				return; 
+				LoadRoom(connection.roomBIndex, connection.doorB);
+                StartCoroutine(Wait());
+                return; 
 			}
 			// Travel from Room B to Room A 
 			if (currentRoomIndex == connection.roomBIndex && direction == connection.doorB)
 			{
-				LoadRoom(connection.roomAIndex, connection.doorA); 
-				return; 
+				LoadRoom(connection.roomAIndex, connection.doorA);
+                StartCoroutine(Wait());
+                return; 
 			}
 		}
+	}
+
+	private IEnumerator Wait()
+	{
+		tryGoThroughDoorWait = true;
+
+		yield return new WaitForSeconds(.1f);
+
+		tryGoThroughDoorWait = false;
+
+		yield return null;
 	}
 
 	public void LoadRoom(int roomIndex, DoorDirection? entryDirection = null)
