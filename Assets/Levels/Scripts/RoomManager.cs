@@ -1,6 +1,5 @@
 using UnityEngine;
-using System.Collections.Generic;
-using System.Collections;
+using System.Collections.Generic; 
 
 [System.Serializable]
 public class RoomConnection
@@ -34,8 +33,6 @@ public class RoomManager : MonoBehaviour
 
 	public static RoomManager Instance { get; private set; }
 
-	private bool tryGoThroughDoorsWait;//ZACH ADDED THIS
-
 	private void Awake()
 	{
 		Instance = this; 
@@ -48,8 +45,6 @@ public class RoomManager : MonoBehaviour
 			Debug.LogError("Player reference is missing!"); 
 			return;
 		}
-
-		tryGoThroughDoorsWait = false; //ZACH ADDED THIS
 
 		bool roomsGenerated = false; 
 
@@ -84,11 +79,6 @@ public class RoomManager : MonoBehaviour
 
 	public void TryGoThroughDoor(DoorDirection direction)
 	{
-		if (tryGoThroughDoorsWait)
-		{
-			return;
-		}
-
 		foreach (RoomConnection connection in connections)
 		{
 			// Travel from Room A to Room B 
@@ -104,22 +94,9 @@ public class RoomManager : MonoBehaviour
 				return; 
 			}
 		}
+	}
 
-        StartCoroutine(Wait());
-    }
-
-    private IEnumerator Wait()
-    {
-        tryGoThroughDoorsWait = true;
-
-        yield return new WaitForSeconds(.1f);
-
-        tryGoThroughDoorsWait = false;
-
-        yield return null;
-    }
-
-    public void LoadRoom(int roomIndex, DoorDirection? entryDirection = null)
+	public void LoadRoom(int roomIndex, DoorDirection? entryDirection = null)
 	{
 
 		if (roomIndex < 0 || roomIndex >= roomPrefabs.Length || roomPrefabs[roomIndex] == null) 
@@ -190,7 +167,7 @@ public class RoomManager : MonoBehaviour
 		// Keep selecting rooms until we have 3
 		while (selectedRooms.Count < roomsPerRun)
 		{
-			int randomIndex = Random.Range(1,3);//roomPrefabs.Length); 
+			int randomIndex = Random.Range(1, roomPrefabs.Length); 
 
 			// Not selecting the same room twice
 			if (!selectedRooms.Contains(randomIndex))
@@ -204,7 +181,7 @@ public class RoomManager : MonoBehaviour
 
 		foreach (int roomIndex in selectedRooms)
 		{
-			//Debug.Log(roomPrefabs[roomIndex].name); 
+			Debug.Log(roomPrefabs[roomIndex].name); 
 		}
 
 		selectedRooms.RemoveAll(index => index == bossRoomIndex); 
@@ -309,8 +286,7 @@ public class RoomManager : MonoBehaviour
 		{
 			bool connectionFound = false;
 			int firstIndex = selectedRooms[i]; 
-			int secondIndex = selectedRooms[i+1];
-			Debug.Log(firstIndex + " " + secondIndex);
+			int secondIndex = selectedRooms[i+1]; 
 			Debug.Log("Checking " + 
 					roomPrefabs[firstIndex].name + " -> " +
 					roomPrefabs[secondIndex].name);
