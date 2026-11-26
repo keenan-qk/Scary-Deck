@@ -47,6 +47,11 @@ public abstract class WeaponBase : MonoBehaviour //foundational base of ALL weap
             //changes the rotation based on how long it takes for the attack to finish and the degrees of the attack
         }
 
+        if(weaponData.weaponStats.projectileSpeed == 0 && weaponData.weaponStats.attackBehavior.degreeOfRotation > -1)
+        {
+            gameObject.transform.position = GameObject.FindWithTag("Player").transform.position;
+        }
+
         if (timer > weaponData.weaponStats.attackBehavior.timeToDestroy && goAgain)
         {
             if(weaponData.weaponStats.attackBehavior.isSpawnObject)
@@ -81,7 +86,11 @@ public abstract class WeaponBase : MonoBehaviour //foundational base of ALL weap
 
             if (e != null)
             {
-                e.TakeDamage(weaponData.weaponStats.damage);
+                if (weaponData.weaponStats.damage > 0)
+                {
+                    PostDamage(weaponData.weaponStats.damage, e.transform.position);
+                    e.TakeDamage(weaponData.weaponStats.damage);
+                }
                 Destroy(gameObject);
             }
         }
@@ -92,7 +101,11 @@ public abstract class WeaponBase : MonoBehaviour //foundational base of ALL weap
             Enemy e = trigger.gameObject.GetComponent<Enemy>();
             if (e != null)
             {
-                e.TakeDamage(weaponData.weaponStats.damage);
+                if(weaponData.weaponStats.damage > 0)
+                {
+                    PostDamage(weaponData.weaponStats.damage, e.transform.position);
+                    e.TakeDamage(weaponData.weaponStats.damage);
+                }
             }
         }
     }
@@ -162,6 +175,11 @@ public abstract class WeaponBase : MonoBehaviour //foundational base of ALL weap
     public void SetInitVel(Vector2 linearVelocity)
     {
         initVel = linearVelocity;
+    }
+
+    public virtual void PostDamage(int damage, Vector3 targetPosition)
+    {
+        MessageSystem.instance.PostMessage(damage.ToString(), targetPosition);
     }
 }
 

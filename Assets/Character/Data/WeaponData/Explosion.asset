@@ -18,7 +18,7 @@ MonoBehaviour:
     damage: 2
     projectileSpeed: 0
     attackBehavior:
-      degreeOfRotation: 0
+      degreeOfRotation: -1
       isRotate: 0
       timeToDestroy: 0.75
       isOneTimeDestroy: 0

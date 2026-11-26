@@ -34,7 +34,7 @@ public class RoomManager : MonoBehaviour
 
 	public static RoomManager Instance { get; private set; }
 
-	private bool tryGoThroughDoorWait;
+	private bool tryGoThroughDoorWait; //ZACH ADDED THIS
 
 	private void Awake()
 	{
@@ -43,7 +43,7 @@ public class RoomManager : MonoBehaviour
 
 	private void Start()
 	{
-		tryGoThroughDoorWait = false;
+		tryGoThroughDoorWait = false; //ZACH ADDED THIS
 
 		if (player == null)
 		{

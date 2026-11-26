@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0a35ca84c7b43d54891b5bc15593c7e5, type: 3}
-  m_Name: Sword Weapon
+  m_Name: Sword
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
-  Name: Sword Weapon
+  Name: Sword
   boonImage: {fileID: -8529158869573905357, guid: 64aec148f133e0342887202490310614, type: 3}
   weaponStats:
     damage: 10

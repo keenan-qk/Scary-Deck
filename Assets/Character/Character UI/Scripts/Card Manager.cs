@@ -19,6 +19,7 @@ public class CardManager : MonoBehaviour
     public UnityEngine.UI.Image card3Black;
     public GameObject reloadPanel;
     public GameObject reloadWipe;
+    public List<WeaponData> synergyWeapons;
     private RectTransform cardSelectorTransform;
     private Vector2 cardTransform;
     private List<WeaponData> weapons; //cards in your hand
@@ -130,19 +131,88 @@ public class CardManager : MonoBehaviour
         boxText.text = "Card: " + newList[index].ToString() + " Reserves: " + reserveWeapons.Count + " Discards: " + discardWeapons.Count
                 + " " + reloadString;
 
-        if (Input.GetMouseButtonDown(0) && isDuringPlay == true && reloadBlack == false && reload == false)
+        if (isDuringPlay == true && reloadBlack == false && reload == false)
         {
             Vector3 mouseScreenLoc = Input.mousePosition;
             Vector3 mouseWorldLoc = Camera.main.ScreenToWorldPoint(mouseScreenLoc);
             mouseWorldLoc.z = 0;
-            Attack(index, mouseWorldLoc);
-            reloadBlack = true;
+            if(Input.GetMouseButtonDown(0))
+            {
+                Attack(index, mouseWorldLoc);
+                reloadBlack = true;
+            }
+            if(Input.GetMouseButtonDown(1))
+            {
+                CheckSynergies(mouseWorldLoc);
+            }
         }
         while ((weapons.Count < 3) && reserveWeapons.Count > 0) //draws cards from reserve deck into active hand
         {   
             weapons.Add(reserveWeapons[0]);
             reserveWeapons.Remove(reserveWeapons[0]); 
         }
+    }
+
+    private void CheckSynergies(Vector3 mousePos)
+    {
+        if(weapons.Count < 3)
+        {
+            Debug.Log("This no work count");
+            return;
+        }
+
+        if(CSynergies(0) == 0) { gameObject.GetComponent<WeaponManager>().CardAttack(synergyWeapons[0], mousePos); }
+        else 
+        {
+            Debug.Log("This no work syn");
+            return; 
+        }
+
+        for(int i = 0; i < 3; i++)
+        {
+            discardWeapons.Add(weapons[0]);
+            weapons.Remove(weapons[0]);
+        }
+       
+        reloadBlack = true;
+    }
+
+    private int CSynergies(int index)
+    {
+        for(int i = 0; i < synergyWeapons.Count; i++)
+        {
+            Debug.Log(weapons[0].name);
+            if (FindSynergies(i, 1).Equals(weapons[0].name) || FindSynergies(i, 2).Equals(weapons[0].name)) {
+                Debug.Log("1");
+                if (FindSynergies(i, 1).Equals(weapons[1].name) || FindSynergies(i, 2).Equals(weapons[1].name)) {
+                    Debug.Log("2");
+                    if (FindSynergies(i, 1).Equals(weapons[1].name) || FindSynergies(i, 2).Equals(weapons[1].name)) {
+                        Debug.Log("3");
+                        return i;
+                    } 
+                }
+            }
+        }
+
+
+        return 1;
+    }
+
+    private string FindSynergies(int index, int sub)
+    {
+        if(index == 0)
+        {
+            if(sub == 1)
+            {
+                return "Sword";
+            }
+            else
+            {
+                return " ";
+            }
+        }
+
+        return " ";
     }
 
     private void Attack(int index, Vector3 mousePos)
@@ -223,8 +293,6 @@ public class CardManager : MonoBehaviour
             discardWeapons.RemoveAt(index);
         }
 
-        Debug.Log("1: " + randomWeapons.Count);
-
         int loop = randomWeapons.Count;
         if(loop > 3)
         {
@@ -235,8 +303,6 @@ public class CardManager : MonoBehaviour
             weapons.Add(randomWeapons[0]);
             randomWeapons.RemoveAt(0);
         }
-
-        Debug.Log("2: " + randomWeapons.Count);
 
         count = randomWeapons.Count;
 
